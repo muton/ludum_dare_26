@@ -7,6 +7,7 @@ import muton.ld26.game.Collectible;
 import muton.ld26.game.Dayvidd;
 import muton.ld26.game.Enemy;
 import muton.ld26.game.Fiyonarr;
+import muton.ld26.game.Places;
 import muton.ld26.game.Player;
 import muton.ld26.game.Scenery;
 import muton.ld26.game.SFX;
@@ -185,6 +186,8 @@ class GameState extends FlxState {
 		
 		player.x = TILE_WIDTH * curLevel.startTile[0];
 		player.y = TILE_HEIGHT * curLevel.startTile[1];
+		
+		testRoutesToAllLocations();
 	}
 	
 	private function playCutScene( sceneId:String ) {
@@ -213,13 +216,11 @@ class GameState extends FlxState {
 		
 		//Lambda.iter( enemies.members, iter_adjustSpriteBrightness );
 		
-		switch ( count % 2 ) {
+		switch ( count++ % 5 ) {
 			case 0: Lambda.iter( enemies.members, iter_canSeePlayer );
-			case 1: Lambda.iter( enemies.members, iter_canSeeClutter );
+			case 2: Lambda.iter( enemies.members, iter_canSeeClutter );
 		}
 		
-		
-		count++;
 	}	
 		
 	//private function updateFloorLighting():Void {
@@ -322,6 +323,37 @@ class GameState extends FlxState {
 		return false;
 	}
 	
+	private function testRoutesToAllLocations() {
+	
+		var locations:Array<FlxPoint> = new Array();
+		
+		var namedplaces = Type.getClassFields( Places );
+		for ( place in namedplaces ) {
+			locations.push( Config.tileCoordToPoint( Reflect.field( Places, place ) ) );
+		}
+		
+		for ( sp in conf.sceneryPlaces ) {
+			var tl = sp.tidyLoc;
+			if ( null != tl ) {
+				locations.push( Config.tileCoordToPoint( tl ) );
+			}
+		}
+		
+		var dayvPt = new FlxPoint( dayvidd.x, dayvidd.y );
+		var fiyPt = new FlxPoint( fiyonarr.x, fiyonarr.y );
+		
+		for ( fp in locations ) {
+			var pathDayvidd = collisionMap.findPath( dayvPt, fp );
+			var pathFiyonarr = collisionMap.findPath( fiyPt, fp );
+			
+			if ( null == pathDayvidd ) {
+				trace( "NO PATH FOUND FOR DAYVIDD TO " + (fp.x / TILE_WIDTH) + "," + (fp.y / TILE_HEIGHT) );
+			}
+			if ( null == pathFiyonarr ) {
+				trace( "NO PATH FOUND FOR FIYONAR TO " + (fp.x / TILE_WIDTH) + "," + (fp.y / TILE_HEIGHT) );
+			}
+		}
+	}
 }
 
 
