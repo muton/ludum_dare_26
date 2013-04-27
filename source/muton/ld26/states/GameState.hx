@@ -25,11 +25,14 @@ import org.flixel.FlxState;
 import org.flixel.FlxTilemap;
 import org.flixel.FlxTypedGroup;
 import org.flixel.FlxU;
+import org.flixel.plugin.photonstorm.FlxVelocity;
 
 class GameState extends FlxState {
 	
 	private static inline var TILE_WIDTH:Int = 9;
 	private static inline var TILE_HEIGHT:Int = 9;
+	
+	public static inline var CAUGHT_RADIUS:Int = 90;
 	
 	private var conf:Config;
 	private var captions:CaptionPlayer;
@@ -171,6 +174,7 @@ class GameState extends FlxState {
 		//updateFloorLighting();
 		
 		//Lambda.iter( enemies.members, iter_adjustSpriteBrightness );
+		Lambda.iter( enemies.members, iter_canSeePlayer );
 		
 		FlxG.collide( player, collectibles, collide_collectItem );
 		FlxG.collide( player, enemies, collide_hitEnemy );
@@ -225,6 +229,16 @@ class GameState extends FlxState {
 	
 	private function iter_unexistSprite( spr:FlxSprite ) {
 		spr.exists = false;
+	}
+	
+	private function iter_canSeePlayer( enemy:Enemy ) {
+		if ( FlxVelocity.distanceBetween( player, enemy ) <= CAUGHT_RADIUS ) {
+			if ( map.ray( new FlxPoint( enemy.x + enemy.origin.x, enemy.y + enemy.origin.y ),
+				new FlxPoint( player.x + player.origin.x, player.y + player.origin.y ) ) ) {
+				
+				trace( "Enemy " + enemy.info.id + " can see you!!!!! " + Math.random() );
+			}
+		}
 	}
 	
 	private function collide_collectItem( objPlayer:FlxObject, objCollectible:FlxObject ) {
