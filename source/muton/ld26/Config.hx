@@ -158,7 +158,7 @@ class Config {
 		scenery = new Hash<SceneryInfo>();
 		var itemList = [
 			["dustbin", "3x3"],
-			["spaceship", "6x13"],
+			["spaceship", "4x13"],
 			["pond", "5x45"],
 			["outdoor_seat", "3x3"],
 			["bench", "15x4"],
