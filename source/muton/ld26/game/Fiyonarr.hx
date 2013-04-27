@@ -9,6 +9,10 @@ class Fiyonarr extends Enemy {
 
 	public function new() {
 		super();
+		whatFx = SFX.FY_WHATS_THAT;
+		spotFx = SFX.FY_HELP_DAYVIDD;
+		clutterFx = SFX.FY_CLUTTER;
+		spotThreshold = 60;
 	}
 	
 	override private function setupRoutes():Dynamic {

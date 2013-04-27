@@ -20,9 +20,11 @@ class Enemy extends FlxSprite {
 
 	private var normSpeed = 40;
 	private var fastSpeed = 65;
+	private var spotThreshold = 100;
 	
 	public var info:EnemyInfo;
 	private var onNothingToDo:Enemy->Void;
+	private var onSpotPlayer:Enemy->Void;
 	
 	private var routes:Array<Array<Array<Int>>>;
 	private var currentRoute:FlxPath;
@@ -35,6 +37,14 @@ class Enemy extends FlxSprite {
 	
 	private var currentClutterTarget:Scenery;
 	private var dealingWithClutterTimer:FlxTimer;
+	private var inARush:Bool;
+	
+	/** at 100, spots player */
+	private var spookLevel:Int = 0;
+	
+	private var whatFx:String;
+	private var spotFx:String;
+	private var clutterFx:String;
 	
 	public function new() {
 		super( 0, 0 );
@@ -69,16 +79,22 @@ class Enemy extends FlxSprite {
 		moveToNextStage();
 	}
 	
-	public function runTo( pt:FlxPoint ) {
-		stopTidying();
-		currentRoute = null;
-		cancelWait();
+	public function runTo( pt:FlxPoint ):Bool {
 		var path = findTheDamnPath( new FlxPoint( x, y ), pt );
-		followPath( path, fastSpeed );
+		if ( null != path ) {
+			trace( info.id + " running to " + pt ); 
+			inARush = true;
+			stopTidying();
+			currentRoute = null;
+			cancelWait();
+			followPath( path, fastSpeed );
+			return true;
+		}
+		return false;
 	}
 	
 	public function tidyClutter( clutteredThing:Scenery ):Void {
-		if ( !isTidying() && !clutteredThing.getBeingTidied() ) {
+		if ( !inARush && !isTidying() && !clutteredThing.getBeingTidied() ) {
 			
 			// find a way to the clutter
 			var path = findTheDamnPath( new FlxPoint( x, y ), clutteredThing.tidyLoc );
@@ -86,6 +102,8 @@ class Enemy extends FlxSprite {
 				trace( "Failed to find path to " + (x / 9) + "," + (y / 9) );
 				return;
 			} 
+			
+			speak( clutterFx );
 			
 			currentClutterTarget = clutteredThing;
 			clutteredThing.setBeingTidied( true );
@@ -139,7 +157,29 @@ class Enemy extends FlxSprite {
 				return flxPath;
 			}
 		}
+		for ( offset in offsetsToTry ) {
+			var flxPath = routeFinderMap.findPath( start, new FlxPoint( target.x + offset[0] * multW, target.y + multH * offset[1] ) );
+			if ( null != flxPath ) { 
+				return flxPath;
+			}
+		}
 		return null;
+	}
+	
+	public function sawSomething( playerX:Float, playerY:Float ):Void {
+		spookLevel += 10;
+		trace( info.id + " saw something, spooklevel is " + spookLevel );
+		
+		if ( spookLevel > 50 ) {
+			runTo( new FlxPoint( playerX, playerY ) );
+			speak( spotFx );
+			if ( spookLevel > spotThreshold ) {
+				onSpotPlayer( this );
+			}
+		} else if ( spookLevel > 20 ) {
+			waitHere( 1 );
+			speak( whatFx );
+		}
 	}
 	
 	public function waitHere( numSecs:Float ):Void {
@@ -156,9 +196,10 @@ class Enemy extends FlxSprite {
 		}
 	}
 	
-	public function setup( info:EnemyInfo, onNothingToDo:Enemy->Void ) {
+	public function setup( info:EnemyInfo, onNothingToDo:Enemy->Void, onSpotPlayer:Enemy->Void ) {
 		this.info = info;
 		this.onNothingToDo = onNothingToDo;
+		this.onSpotPlayer = onSpotPlayer;
 		cancelWait();
 		setupRoutes();
 		
@@ -169,6 +210,7 @@ class Enemy extends FlxSprite {
 	
 	override public function update():Void {
 		super.update();
+		spookLevel = Std.int( Math.max( 0, spookLevel - 1 ) );
 		if ( null != currentClutterTarget ) {
 			// we should be on route to clutter
 			if ( null == dealingWithClutterTimer && FlxVelocity.distanceToPoint( this, currentClutterTarget.tidyLoc ) < 10 ) {
@@ -186,6 +228,7 @@ class Enemy extends FlxSprite {
 			}
 		} else if ( null == delay && 0 == pathSpeed ) {
 			//currentRoute = null;
+			inARush = false;
 			moveToNextStage();
 		}
 	}

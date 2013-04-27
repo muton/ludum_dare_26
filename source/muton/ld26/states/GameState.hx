@@ -175,7 +175,7 @@ class GameState extends FlxState {
 				fiyonarr = cast( enemy, Fiyonarr );
 			}
 			enemy.setRouteFinderMap( collisionMap );
-			enemy.setup( conf.enemies.get( en.id ), onEnemyHasNothingToDo );
+			enemy.setup( conf.enemies.get( en.id ), onEnemyHasNothingToDo, onEnemySpottedPlayer );
 			enemy.active = true;
 			enemy.exists = true;
 			enemy.x = en.x;
@@ -256,10 +256,19 @@ class GameState extends FlxState {
 	}
 	
 	private function onEnemyHasNothingToDo( en:Enemy ) {
-		if ( FlxG.random() > 0.2 ) { 
+		if ( FlxG.random() > 0.3 ) { 
 			en.waitHere( 2 );
 		} else {
 			en.lookBusy();
+		}
+	}
+	
+	private function onEnemySpottedPlayer( en:Enemy ) {
+		if ( en == fiyonarr ) {
+			dayvidd.runTo( new FlxPoint( fiyonarr.x, fiyonarr.y ) );
+		} else if ( en == dayvidd ) {
+			trace( "Killed by DaYviDD!!" );
+			resetLevel();
 		}
 	}
 	
@@ -276,11 +285,7 @@ class GameState extends FlxState {
 	
 	private function iter_canSeePlayer( enemy:Enemy ) {
 		if ( enemyCanSee( enemy, player ) ) {
-			if ( enemy == fiyonarr ) { 
-				enemy.speak( SFX.FY_WHATS_THAT );
-			} else {
-				enemy.speak( SFX.DA_WHATS_THAT );
-			}
+			enemy.sawSomething( player.x, player.y );
 		}
 	}
 	
@@ -290,8 +295,6 @@ class GameState extends FlxState {
 		
 		for ( sc in scenery.members ) {
 			if ( sc.exists && sc.getCluttered() && enemyCanSee( enemy, sc ) ) {
-				enemy.speak( enemy == fiyonarr ? SFX.FY_CLUTTER : SFX.DA_CLUTTER );
-				trace( enemy.info.id + " found clutter!" );
 				enemy.tidyClutter( sc );
 				break;
 			}
