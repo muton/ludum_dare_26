@@ -73,7 +73,7 @@ class Enemy extends FlxSprite {
 		stopTidying();
 		currentRoute = null;
 		cancelWait();
-		var path = routeFinderMap.findPath( new FlxPoint( x, y ), pt );
+		var path = findTheDamnPath( new FlxPoint( x, y ), pt );
 		followPath( path, fastSpeed );
 	}
 	
@@ -81,7 +81,7 @@ class Enemy extends FlxSprite {
 		if ( !isTidying() && !clutteredThing.getBeingTidied() ) {
 			
 			// find a way to the clutter
-			var path = routeFinderMap.findPath( new FlxPoint( x, y ), clutteredThing.tidyLoc );
+			var path = findTheDamnPath( new FlxPoint( x, y ), clutteredThing.tidyLoc );
 			if ( null == path ) {
 				trace( "Failed to find path to " + (x / 9) + "," + (y / 9) );
 				return;
@@ -118,12 +118,28 @@ class Enemy extends FlxSprite {
 			return;
 		}
 		var pt = currentRoute.removeAt( 0 );
-		var path = routeFinderMap.findPath( new FlxPoint( x, y ), pt );
+		var path = findTheDamnPath( new FlxPoint( x, y ), pt );
 		if ( path == null ) { 
 			trace( info.id + " couldn't get route to " + pt.x + ", " + pt.y );
 		} else {
 			followPath( path, normSpeed );
 		}
+	}
+	
+	/** we'll multiply these and offset our position to try to get a bloody route! */
+	private function findTheDamnPath( start:FlxPoint, target:FlxPoint ):FlxPath {
+		var offsetsToTry:Array<Array<Int>> = [ [0, 0], [0, -1], [1, 0], [0, 1], [ -1, 0], [ -1, 1], [1, 1], [1, -1], [ -1, -1] ];
+		
+		var multW = width / 2;
+		var multH = height / 2;
+		
+		for ( offset in offsetsToTry ) {
+			var flxPath = routeFinderMap.findPath( new FlxPoint( start.x + offset[0] * multW, start.y + multH * offset[1] ), target );
+			if ( null != flxPath ) { 
+				return flxPath;
+			}
+		}
+		return null;
 	}
 	
 	public function waitHere( numSecs:Float ):Void {
