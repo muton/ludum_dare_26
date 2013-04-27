@@ -8,6 +8,7 @@ import muton.ld26.game.Enemy;
 import muton.ld26.game.Player;
 import muton.ld26.game.TouchUI;
 import muton.ld26.util.Lighting;
+import muton.ld26.util.TileMapUtil;
 import nme.Assets;
 import nme.events.Event;
 import org.flixel.FlxCamera;
@@ -51,7 +52,7 @@ class GameState extends FlxState {
 		
 		conf = new Config( "assets/conf/config.json" );
 		
-		floor = new FlxTilemap();
+		//floor = new FlxTilemap();
 		//add( floor );
 		
 		map = new FlxTilemap();
@@ -88,20 +89,20 @@ class GameState extends FlxState {
 	private function resetLevel() {
 		
 		map.loadMap( 
-			Assets.getText( curLevel.mapPath ), 
+			TileMapUtil.bmpToTileMap( Assets.getBitmapData( "assets/conf/mapdata_walls.png" ) ), 
 			Assets.getBitmapData( "assets/tiles/autotiles_9x9_walls.png" ),
 			9, 9, 0 );
-		map.follow();	// causes camera bounds to be set too
+		map.follow( null, -10, true );	// causes camera bounds to be set too
 		
-		floor.widthInTiles = map.widthInTiles;
-		floor.heightInTiles = map.heightInTiles;
-		var blankArr = new Array<Int>();
-		for ( i in 0...map.totalTiles ) { blankArr.push( 0 ); }
-		var floorTile:FlxSprite = new FlxSprite( 0, 0, "assets/tiles/floor_tile_16x16.png" );
-		floor.loadMap(
-			blankArr, 
-			Lighting.genLightMapTileSet( 7, TILE_WIDTH, TILE_HEIGHT, 0.9, floorTile.pixels ),
-			TILE_WIDTH, TILE_HEIGHT, FlxTilemap.OFF, 0, 1, 0 );
+		//floor.widthInTiles = map.widthInTiles;
+		//floor.heightInTiles = map.heightInTiles;
+		//var blankArr = new Array<Int>();
+		//for ( i in 0...map.totalTiles ) { blankArr.push( 0 ); }
+		//var floorTile:FlxSprite = new FlxSprite( 0, 0, "assets/tiles/floor_tile_16x16.png" );
+		//floor.loadMap(
+			//blankArr, 
+			//Lighting.genLightMapTileSet( 7, TILE_WIDTH, TILE_HEIGHT, 0.9, floorTile.pixels ),
+			//TILE_WIDTH, TILE_HEIGHT, FlxTilemap.OFF, 0, 1, 0 );
 			
 			
 		// make the world bigger so tilemap collisions work, but camera doesn't stop at edge of play area
