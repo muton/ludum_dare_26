@@ -13,6 +13,7 @@ import muton.ld26.game.SFX;
 import muton.ld26.game.TouchUI;
 import muton.ld26.util.TileMapUtil;
 import nme.Assets;
+import nme.display.BitmapData;
 import nme.events.Event;
 import org.flixel.FlxCamera;
 import org.flixel.FlxG;
@@ -40,7 +41,8 @@ class GameState extends FlxState {
 	private var curLevel:LevelInfo;
 	
 	private var floor:FlxTilemap;
-	private var map:FlxTilemap;
+	private var collisionMap:FlxTilemap;
+	private var wallMap:FlxTilemap;
 	
 	private var collectibles:FlxTypedGroup<Collectible>;
 	private var scenery:FlxTypedGroup<Scenery>;
@@ -63,8 +65,11 @@ class GameState extends FlxState {
 		//floor = new FlxTilemap();
 		//add( floor );
 		
-		map = new FlxTilemap();
-		add( map );
+		collisionMap = new FlxTilemap();
+		add( collisionMap );
+		
+		wallMap = new FlxTilemap();
+		add( wallMap );
 		
 		scenery = new FlxTypedGroup<Scenery>( 30 );
 		add( scenery);
@@ -99,11 +104,18 @@ class GameState extends FlxState {
 	
 	private function resetLevel() {
 		
-		map.loadMap( 
+		wallMap.loadMap( 
 			TileMapUtil.bmpToTileMap( Assets.getBitmapData( "assets/conf/mapdata_walls.png" ) ), 
 			Assets.getBitmapData( "assets/tiles/autotiles_9x9_walls.png" ),
 			9, 9, 0 );
-		map.follow( null, -10, true );	// causes camera bounds to be set too
+		wallMap.follow( null, -10, true );	// causes camera bounds to be set too
+		
+		collisionMap.widthInTiles = wallMap.widthInTiles;
+		collisionMap.heightInTiles = wallMap.heightInTiles;
+		var blankArr = new Array<Int>();
+		for ( i in 0...wallMap.totalTiles ) { blankArr.push( wallMap.getTileByIndex( i ) == 0 ? 0 : 1 ); }
+		var bmpd:BitmapData = new BitmapData( TILE_WIDTH * 2, TILE_HEIGHT, true, 0xff000000 );
+		collisionMap.loadMap( blankArr, bmpd, TILE_WIDTH, TILE_HEIGHT );
 		
 		//floor.widthInTiles = map.widthInTiles;
 		//floor.heightInTiles = map.heightInTiles;
@@ -128,6 +140,11 @@ class GameState extends FlxState {
 			chunk.x = scp.loc[0] * TILE_WIDTH;
 			chunk.y = scp.loc[1] * TILE_HEIGHT;
 			chunk.exists = true;
+			for ( y in 0...inf.heightTiles ) {
+				for ( x in 0...inf.widthTiles ) {
+					collisionMap.setTile( scp.loc[0] + x, scp.loc[1] + y, 1, false );
+				}
+			}
 		}
 		
 		Lambda.iter( collectibles.members, iter_unexistSprite );
@@ -152,7 +169,7 @@ class GameState extends FlxState {
 				enemy = enemies.recycle( Fiyonarr );
 				fiyonarr = cast( enemy, Fiyonarr );
 			}
-			enemy.setRouteFinderMap( map );
+			enemy.setRouteFinderMap( collisionMap );
 			enemy.setup( conf.enemies.get( en.id ), onEnemyHasNothingToDo );
 			enemy.active = true;
 			enemy.exists = true;
@@ -183,7 +200,7 @@ class GameState extends FlxState {
 		super.update();
 		
 		captions.update();
-		FlxG.collide( player, map );
+		FlxG.collide( player, collisionMap );
 		
 		//updateFloorLighting();
 		
@@ -226,7 +243,6 @@ class GameState extends FlxState {
 	}
 	
 	private function onEnemyHasNothingToDo( en:Enemy ) {
-		trace( en.info.id + " has nothing to do" );
 		if ( FlxG.random() > 0.2 ) { 
 			en.waitHere( 2 );
 		} else {
@@ -247,7 +263,7 @@ class GameState extends FlxState {
 	
 	private function iter_canSeePlayer( enemy:Enemy ) {
 		if ( FlxVelocity.distanceBetween( player, enemy ) <= CAUGHT_RADIUS ) {
-			if ( map.ray( new FlxPoint( enemy.x + enemy.origin.x, enemy.y + enemy.origin.y ),
+			if ( wallMap.ray( new FlxPoint( enemy.x + enemy.origin.x, enemy.y + enemy.origin.y ),
 				new FlxPoint( player.x + player.origin.x, player.y + player.origin.y ) ) ) {
 				
 				var directionFacing = Util.clampAngle( enemy.pathAngle );

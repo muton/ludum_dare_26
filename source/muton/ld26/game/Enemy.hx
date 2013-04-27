@@ -80,12 +80,16 @@ class Enemy extends FlxSprite {
 			onNothingToDo( this );
 			return;
 		}
-		var path = routeFinderMap.findPath( new FlxPoint( x, y ), currentRoute.removeAt( 0 ) );
-		followPath( path, normSpeed );
+		var pt = currentRoute.removeAt( 0 );
+		var path = routeFinderMap.findPath( new FlxPoint( x, y ), pt );
+		if ( path == null ) { 
+			trace( "couldn't get route to " + pt.x + ", " + pt.y );
+		} else {
+			followPath( path, normSpeed );
+		}
 	}
 	
 	public function waitHere( numSecs:Float ):Void {
-		trace( info.id + " is waiting here for " + numSecs + " seconds" );
 		cancelWait();
 		delay = new FlxDelay( Std.int( numSecs * 1000 ) );
 		delay.callbackFunction = function() { cancelWait();  onNothingToDo( this ); }

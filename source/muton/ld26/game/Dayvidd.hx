@@ -11,10 +11,11 @@ class Dayvidd extends Enemy {
 		super();
 	}
 
-
 	override private function setupRoutes():Dynamic {
 		super.setupRoutes();
-		routes.push( [ [65, 5], [65, 55], [30, 15] ] );
+		routes.push( [ Places.diningRoom, Places.entropyCupboard, Places.diningRoom ] );
+		routes.push( [ Places.livingRoom, Places.pondSouth ] ) ;
+		routes.push( [ Places.bedroom, Places.kitchen, Places.entropyCupboard] );
 	}
 	
 }

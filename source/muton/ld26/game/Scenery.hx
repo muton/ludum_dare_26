@@ -17,7 +17,6 @@ class Scenery extends FlxSprite {
 	
 	public function setup( info:SceneryInfo ) {
 		this.info = info;
-		trace( "info is " + info );
 		//loadGraphic( info.spritePath, info.anim.frameList.length > 1, false, info.spriteWidth, info.spriteHeight );
 		//addAnimation( "default", info.anim.frameList, info.anim.fps, info.anim.loop != false );
 		//play( "default" );

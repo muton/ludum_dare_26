@@ -38,10 +38,10 @@
 			],
 			"enemies": [
 				{ 
-					"id": "dayvidd", "x": 150, "y": 30, "route": [] 
+					"id": "dayvidd", "x": 360, "y": 117, "route": [] 
 				},
 								{ 
-					"id": "fiyonarr", "x": 350, "y": 30, "route": [] 
+					"id": "fiyonarr", "x": 135, "y": 108, "route": [] 
 				} 
 
 			]
@@ -60,7 +60,8 @@
 		}
 	],
 	"sceneryPlaces": [
-		{ "id": "dustbin", "loc":[63,3] },
+		{ "id": "dustbin", "loc":[2,62] },
+		{ "id": "dustbin", "loc":[2,66] },
 		{ "id": "spaceship", "loc":[22,35] },
 		{ "id": "pond", "loc":[5,5] },
 		{ "id": "outdoor_seat", "loc":[12,5] },
