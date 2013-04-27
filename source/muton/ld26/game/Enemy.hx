@@ -17,8 +17,8 @@ import org.flixel.plugin.photonstorm.FlxDelay;
 
 class Enemy extends FlxSprite {
 
-	private var normSpeed = 50;
-	private var fastSpeed = 75;
+	private var normSpeed = 40;
+	private var fastSpeed = 65;
 	
 	public var info:EnemyInfo;
 	private var onNothingToDo:Enemy->Void;

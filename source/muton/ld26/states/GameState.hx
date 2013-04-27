@@ -34,7 +34,8 @@ class GameState extends FlxState {
 	private static inline var TILE_WIDTH:Int = 9;
 	private static inline var TILE_HEIGHT:Int = 9;
 	
-	public static inline var CAUGHT_RADIUS:Int = 90;
+	public static inline var CAUGHT_RADIUS:Int = 110;
+	public static inline var EYE_ANGLE:Float = 180;
 	
 	private var conf:Config;
 	private var captions:CaptionPlayer;
@@ -238,11 +239,15 @@ class GameState extends FlxState {
 			if ( map.ray( new FlxPoint( enemy.x + enemy.origin.x, enemy.y + enemy.origin.y ),
 				new FlxPoint( player.x + player.origin.x, player.y + player.origin.y ) ) ) {
 				
-				trace( "Enemy " + enemy.info.id + " can see you!!!!! " + Math.random() );
-				if ( enemy == fiyonarr ) { 
-					enemy.speak( SFX.FY_WHATS_THAT );
-				} else {
-					enemy.speak( SFX.DA_WHATS_THAT );
+				var directionFacing = Util.clampAngle( enemy.pathAngle );
+				var directionOfPlayer = Util.clampAngle( FlxVelocity.angleBetween( enemy, player, true ) + 90 );
+				
+				if ( Util.angleDifference( directionFacing, directionOfPlayer ) < EYE_ANGLE / 2 ) {
+					if ( enemy == fiyonarr ) { 
+						enemy.speak( SFX.FY_WHATS_THAT );
+					} else {
+						enemy.speak( SFX.DA_WHATS_THAT );
+					}
 				}
 			}
 		}
@@ -258,4 +263,16 @@ class GameState extends FlxState {
 	}
 	
 	
+}
+
+
+class Util {
+	
+	public static inline function clampAngle( angle:Float ):Float {
+		return ( angle % 360 ) + ( angle < 0 ? 360 : 0 );		
+	}
+	
+	public static inline function angleDifference( angleA:Float, angleB:Float ):Float {
+		return Math.abs( ( angleA + 180 -  angleB ) % 360 - 180 );
+	}
 }
