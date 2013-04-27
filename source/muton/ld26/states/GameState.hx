@@ -36,6 +36,8 @@ class GameState extends FlxState {
 	public static inline var CAUGHT_RADIUS:Int = 110;
 	public static inline var EYE_ANGLE:Float = 180;
 	
+	private var count:Int;
+	
 	private var conf:Config;
 	private var captions:CaptionPlayer;
 	private var cutScenes:CutScenePlayer;
@@ -206,11 +208,18 @@ class GameState extends FlxState {
 		
 		//updateFloorLighting();
 		
-		//Lambda.iter( enemies.members, iter_adjustSpriteBrightness );
-		Lambda.iter( enemies.members, iter_canSeePlayer );
-		
 		FlxG.collide( player, collectibles, collide_collectItem );
 		FlxG.collide( player, enemies, collide_hitEnemy );
+		
+		//Lambda.iter( enemies.members, iter_adjustSpriteBrightness );
+		
+		switch ( count % 2 ) {
+			case 0: Lambda.iter( enemies.members, iter_canSeePlayer );
+			case 1: Lambda.iter( enemies.members, iter_canSeeClutter );
+		}
+		
+		
+		count++;
 	}	
 		
 	//private function updateFloorLighting():Void {
@@ -265,20 +274,20 @@ class GameState extends FlxState {
 	}
 	
 	private function iter_canSeePlayer( enemy:Enemy ) {
-		if ( FlxVelocity.distanceBetween( player, enemy ) <= CAUGHT_RADIUS ) {
-			if ( wallMap.ray( new FlxPoint( enemy.x + enemy.origin.x, enemy.y + enemy.origin.y ),
-				new FlxPoint( player.x + player.origin.x, player.y + player.origin.y ) ) ) {
-				
-				var directionFacing = Util.clampAngle( enemy.pathAngle );
-				var directionOfPlayer = Util.clampAngle( FlxVelocity.angleBetween( enemy, player, true ) + 90 );
-				
-				if ( Util.angleDifference( directionFacing, directionOfPlayer ) < EYE_ANGLE / 2 ) {
-					if ( enemy == fiyonarr ) { 
-						enemy.speak( SFX.FY_WHATS_THAT );
-					} else {
-						enemy.speak( SFX.DA_WHATS_THAT );
-					}
-				}
+		if ( enemyCanSee( enemy, player ) ) {
+			if ( enemy == fiyonarr ) { 
+				enemy.speak( SFX.FY_WHATS_THAT );
+			} else {
+				enemy.speak( SFX.DA_WHATS_THAT );
+			}
+		}
+	}
+	
+	private function iter_canSeeClutter( enemy:Enemy ) {
+		for ( sc in scenery.members ) {
+			if ( sc.exists && sc.getCluttered() && enemyCanSee( enemy, sc ) ) {
+				enemy.speak( enemy == fiyonarr ? SFX.FY_CLUTTER : SFX.DA_CLUTTER );
+				trace( enemy.info.id + " found clutter!" );
 			}
 		}
 	}
@@ -292,6 +301,21 @@ class GameState extends FlxState {
 		resetLevel();
 	}
 	
+	private function enemyCanSee( enemy:Enemy, sprite:FlxSprite ):Bool {
+		if ( FlxVelocity.distanceBetween( sprite, enemy ) <= CAUGHT_RADIUS ) {
+			if ( wallMap.ray( new FlxPoint( enemy.x + enemy.origin.x, enemy.y + enemy.origin.y ),
+				new FlxPoint( sprite.x + sprite.origin.x, sprite.y + sprite.origin.y ) ) ) {
+				
+				var directionFacing = Util.clampAngle( enemy.pathAngle );
+				var directionOfSprite = Util.clampAngle( FlxVelocity.angleBetween( enemy, sprite, true ) + 90 );
+				
+				if ( Util.angleDifference( directionFacing, directionOfSprite ) < EYE_ANGLE / 2 ) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 	
 }
 
