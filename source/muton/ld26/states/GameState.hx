@@ -66,7 +66,6 @@ class GameState extends FlxState {
 		FlxG.mouse.hide();
 		
 		conf = new Config( "assets/conf/config.json" );
-		
 		//floor = new FlxTilemap();
 		//add( floor );
 		
@@ -216,7 +215,7 @@ class GameState extends FlxState {
 		
 		//Lambda.iter( enemies.members, iter_adjustSpriteBrightness );
 		
-		switch ( count++ % 5 ) {
+		switch ( count++ % 3 ) {
 			case 0: Lambda.iter( enemies.members, iter_canSeePlayer );
 			case 2: Lambda.iter( enemies.members, iter_canSeeClutter );
 		}

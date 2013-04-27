@@ -71,7 +71,7 @@ class Enemy extends FlxSprite {
 	}
 	
 	public function lookBusy() {
-		if ( null != currentRoute ) {
+		if ( inARush || null != currentRoute ) {
 			return;
 		}
 		cancelWait();
@@ -82,7 +82,7 @@ class Enemy extends FlxSprite {
 	public function runTo( pt:FlxPoint ):Bool {
 		var path = findTheDamnPath( new FlxPoint( x, y ), pt );
 		if ( null != path ) {
-			trace( info.id + " running to " + pt ); 
+			trace( info.id + " running to " + pt.x + "," + pt.y + ", I am at " + x + "," + y ); 
 			inARush = true;
 			stopTidying();
 			currentRoute = null;
@@ -90,6 +90,7 @@ class Enemy extends FlxSprite {
 			followPath( path, fastSpeed );
 			return true;
 		}
+		trace( "couldn't find a way to run to " + pt );
 		return false;
 	}
 	
@@ -102,6 +103,7 @@ class Enemy extends FlxSprite {
 				trace( "Failed to find path to " + (x / 9) + "," + (y / 9) );
 				return;
 			} 
+			trace( info.id + " tidyClutter" );
 			
 			speak( clutterFx );
 			
@@ -132,6 +134,7 @@ class Enemy extends FlxSprite {
 	private function moveToNextStage():Void {
 		if ( null == currentRoute || currentRoute.nodes.length == 0 ) { 
 			currentRoute = null;
+			trace( info.id + " got nothing to do " );
 			onNothingToDo( this );
 			return;
 		}

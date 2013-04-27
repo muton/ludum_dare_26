@@ -156,8 +156,10 @@ class Config {
 		return path;
 	}
 	
-	public static inline function tileCoordToPoint( tileCoord:Array<Int> ):FlxPoint {
-		if ( null == tileCoord || tileCoord.length != 2 ) { return null; }
+	public static function tileCoordToPoint( tileCoord:Array<Int> ):FlxPoint {
+		if ( null == tileCoord || tileCoord.length != 2 ) { 
+			return null; 
+		}
 		return new FlxPoint( tileCoord[0] * 9, tileCoord[1] * 9 );
 	}
 	
