@@ -66,6 +66,9 @@ class GameState extends FlxState {
 		map = new FlxTilemap();
 		add( map );
 		
+		scenery = new FlxTypedGroup<Scenery>( 30 );
+		add( scenery);
+		
 		collectibles = new FlxTypedGroup<Collectible>( 20 );
 		add( collectibles );
 		
@@ -115,6 +118,17 @@ class GameState extends FlxState {
 			
 		// make the world bigger so tilemap collisions work, but camera doesn't stop at edge of play area
 		//FlxG.worldBounds.copyFrom( new FlxRect( -100, -100, map.width + 100, map.height + 100 ) );
+		
+		Lambda.iter( scenery.members, iter_unexistSprite );
+		
+		for ( scp in conf.sceneryPlaces ) { 
+			var inf = conf.scenery.get( scp.id );
+			var chunk = scenery.recycle( Scenery );
+			chunk.setup( inf );
+			chunk.x = scp.loc[0] * TILE_WIDTH;
+			chunk.y = scp.loc[1] * TILE_HEIGHT;
+			chunk.exists = true;
+		}
 		
 		Lambda.iter( collectibles.members, iter_unexistSprite );
 		
