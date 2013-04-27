@@ -2,8 +2,8 @@
 <project>
 	<app title="ld26" file="ld26" main="Main" version="0.0.1" company="muton" />
 	
-	<window width="600" height="500" fps="30" orientation="portrait" resizable="true" if="web" />
-	<window width="600" height="500" fps="30" orientation="landscape" fullscreen="false" unless="web" />
+	<window width="700" height="500" fps="30" orientation="portrait" resizable="true" if="web" />
+	<window width="700" height="500" fps="30" orientation="landscape" fullscreen="false" unless="web" />
  	
 	<set name="BUILD_DIR" value="export" />
 	

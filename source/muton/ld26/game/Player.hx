@@ -26,11 +26,11 @@ class Player extends FlxSprite {
 		facingAnims.set( FlxObject.UP, "up" );
 		facingAnims.set( FlxObject.DOWN, "down" );
 		
-		loadGraphic( "assets/sprites/globbo.png", true, false, 12, 12 );
-		addAnimation( "left", [0, 1, 2, 3, 4, 3, 2, 1], 10, true );
-		addAnimation( "right", [0, 1, 2, 3, 4, 3, 2, 1], 10, true );
-		addAnimation( "up", [0, 1, 2, 3, 4, 3, 2, 1], 6, true );
-		addAnimation( "down", [0, 1, 2, 3, 4, 3, 2, 1], 6, true );
+		loadGraphic( "assets/sprites/player_sheet.png", true, false, 27, 27 );
+		addAnimation( "left", [0], 6, true );
+		addAnimation( "right", [0], 6, true );
+		addAnimation( "up", [0], 6, true );
+		addAnimation( "down", [0], 6, true );
 		play( "right" );
 	}
 	

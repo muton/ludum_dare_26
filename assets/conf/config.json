@@ -18,7 +18,7 @@
 		{
 			"id": "level_1",
 			"mapPath": "assets/conf/level1_map.txt",
-			"startTile": [3, 3],
+			"startTile": [25, 65],
 			"items": [
 				{ "id": "example", "x": 100, "y": 20 },
 				{ "id": "example", "x": 200, "y": 60 },
