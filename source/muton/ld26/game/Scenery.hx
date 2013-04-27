@@ -31,7 +31,8 @@ class Scenery extends FlxSprite {
 	
 	public function setCluttered( cluttered:Bool ) {
 		this.cluttered = cluttered;
-		makeGraphic( info.widthTiles * 9, info.heightTiles * 9, cluttered ? 0xFFFF0000 : 0xFFF0F0F0 );
+		var colour = info.interactive ? 0xFFFFFF80 : 0xFFF0F0F0;
+		makeGraphic( info.widthTiles * 9, info.heightTiles * 9, cluttered ? 0xFFFF0000 : colour );
 	}
 	
 	override public function update():Void {
