@@ -6,7 +6,7 @@
 			"mass": 10,
 			"spritePath": "assets/sprites/dayvidd_sheet.png",
 			"spriteWidth": 18,
-			"spriteHeight": 27,
+			"spriteHeight": 36,
 			"moveAnim": {
 				"frameList": [0],
 				"fps": 6
@@ -19,7 +19,7 @@
 			"mass": 10,
 			"spritePath": "assets/sprites/fiyonarr_sheet.png",
 			"spriteWidth": 18,
-			"spriteHeight": 27,
+			"spriteHeight": 36,
 			"moveAnim": {
 				"frameList": [0],
 				"fps": 6
