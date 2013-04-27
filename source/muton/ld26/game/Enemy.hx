@@ -1,6 +1,7 @@
 package muton.ld26.game;
 import muton.ld26.Config;
 import muton.ld26.util.TileMapUtil;
+import org.flixel.FlxG;
 import org.flixel.FlxPath;
 import org.flixel.FlxPoint;
 import org.flixel.FlxSprite;
@@ -45,7 +46,7 @@ class Enemy extends FlxSprite {
 			return;
 		}
 		cancelWait();
-		currentRoute = Config.routeToPath( routes[0], 9 );
+		currentRoute = Config.routeToPath( routes[Std.int( FlxG.random() * routes.length )], 9 );
 		moveToNextStage();
 	}
 	
