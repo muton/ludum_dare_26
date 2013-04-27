@@ -1,0 +1,92 @@
+{
+	"enemies": [
+		{
+			"id": "simpleBot",
+			"health": 2,
+			"mass": 10,
+			"spritePath": "assets/sprites/simple_bot_sheet.png",
+			"spriteWidth": 25,
+			"spriteHeight": 25,
+			"moveAnim": {
+				"frameList": [1, 2, 3, 2],
+				"fps": 6
+			},
+			"deadFrame": 0
+		}
+	],
+	"levels": [
+		{
+			"id": "level_1",
+			"mapPath": "assets/conf/level1_map.txt",
+			"startTile": [3, 3],
+			"items": [
+				{ "id": "example", "x": 100, "y": 20 },
+				{ "id": "example", "x": 200, "y": 60 },
+				{ "id": "example", "x": 100, "y": 300 }
+			],
+			"enemies": [
+				{ 
+					"id": "simpleBot", "x": 150, "y": 30, 
+					"route": [ [250,30], [150,30] ] 
+				} 
+			]
+		}
+	],
+	"collectibles": [
+		{
+			"id": "example",
+			"spritePath": "assets/sprites/example_collectible_sheet.png",
+			"spriteWidth": 12,
+			"spriteHeight": 12,
+			"anim": {
+				"frameList": [ 0, 1, 2],
+				"fps": 5
+			}
+		}
+	],
+	"capSequences": [
+		{
+			"id": "intro",
+			"placements": [
+				{ "id": "tl", "x": 20, "y": 20, "width": 200, "color": "0x800080" },
+				{ "id": "br", "x": 20, "y": 20, "width": 100, "color": "0xFF0000", "fromRight": true, "fromBottom": true }
+			],
+			"timeline": [
+				{ "label": "Explore in the dark", "time": 0, "duration": 4, "placeId": "tl" },
+				{ "label": "There is nothing much to do", "time": 4, "duration": 4, "placeId": "tl" },
+				{ "label": "...yet", "time": 8, "duration": 4, "placeId": "br" }
+			]
+		}
+	],
+	"cutScenes": [
+		{
+			"id": "demo",
+			"timeline": [
+				{
+					"duration": 3,
+					"imagePath": "assets/cutscenes/demo_img_1.png",
+					"captions": [
+						{ "label": "This is a demo", "duration": 2 },
+						{ "label": "The text is unrelated to the picture", "duration": 1 }
+					]
+				},
+				{
+					"duration": 2,
+					"imagePath": "assets/cutscenes/demo_img_2.png",
+					"captions": [
+						{ "label": "Just another picture", "duration": 2 }
+					]
+				},
+				{
+					"duration": 3,
+					"imagePath": "assets/cutscenes/demo_img_3.png",
+					"captions": [
+						{ "label": "And finally...", "duration": 1 },
+						{ "label": "...a cute...", "duration": 1 },
+						{ "label": "...little squirrel.", "duration": 1 }
+					]
+				}
+			]
+		}
+	]
+}
