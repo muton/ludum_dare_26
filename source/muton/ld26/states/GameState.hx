@@ -240,7 +240,7 @@ class GameState extends FlxState {
 		Lambda.iter( scenery.members, function( sc:Scenery ) {
 			if ( sc.exists && sc.info.interactive 
 				&& FlxCollision.pixelPerfectPointCheck( Std.int( hitPt.x ), Std.int( hitPt.y ), sc ) ) {
-				trace( "ITERACT WITH " + sc.info.id );
+				sc.setCluttered( true );
 			}
 		} );
 	}
