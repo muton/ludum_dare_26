@@ -24,8 +24,8 @@ import org.flixel.FlxU;
 
 class GameState extends FlxState {
 	
-	private static inline var TILE_WIDTH:Int = 16;
-	private static inline var TILE_HEIGHT:Int = 16;
+	private static inline var TILE_WIDTH:Int = 9;
+	private static inline var TILE_HEIGHT:Int = 9;
 	
 	private var conf:Config;
 	private var captions:CaptionPlayer;
@@ -89,9 +89,8 @@ class GameState extends FlxState {
 		
 		map.loadMap( 
 			Assets.getText( curLevel.mapPath ), 
-			Assets.getBitmapData( "assets/tiles/autotiles_dark_16x16.png" ),
-			//Assets.getBitmapData( "assets/tiles/autotiles_16x16.png" ),
-			16, 16, FlxTilemap.ALT );
+			Assets.getBitmapData( "assets/tiles/autotiles_9x9_walls.png" ),
+			9, 9, 0 );
 		map.follow();	// causes camera bounds to be set too
 		
 		floor.widthInTiles = map.widthInTiles;
