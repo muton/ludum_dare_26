@@ -52,7 +52,7 @@ class GameState extends FlxState {
 		conf = new Config( "assets/conf/config.json" );
 		
 		floor = new FlxTilemap();
-		add( floor );
+		//add( floor );
 		
 		map = new FlxTilemap();
 		add( map );
@@ -92,7 +92,7 @@ class GameState extends FlxState {
 			Assets.getBitmapData( "assets/tiles/autotiles_dark_16x16.png" ),
 			//Assets.getBitmapData( "assets/tiles/autotiles_16x16.png" ),
 			16, 16, FlxTilemap.ALT );
-		//map.follow();	// causes camera bounds to be set too
+		map.follow();	// causes camera bounds to be set too
 		
 		floor.widthInTiles = map.widthInTiles;
 		floor.heightInTiles = map.heightInTiles;
@@ -106,7 +106,7 @@ class GameState extends FlxState {
 			
 			
 		// make the world bigger so tilemap collisions work, but camera doesn't stop at edge of play area
-		FlxG.worldBounds.copyFrom( new FlxRect( -100, -100, map.width + 100, map.height + 100 ) );
+		//FlxG.worldBounds.copyFrom( new FlxRect( -100, -100, map.width + 100, map.height + 100 ) );
 		
 		Lambda.iter( collectibles.members, iter_unexistSprite );
 		
@@ -154,36 +154,36 @@ class GameState extends FlxState {
 		captions.update();
 		FlxG.collide( player, map );
 		
-		updateFloorLighting();
+		//updateFloorLighting();
 		
-		Lambda.iter( enemies.members, iter_adjustSpriteBrightness );
+		//Lambda.iter( enemies.members, iter_adjustSpriteBrightness );
 		
 		FlxG.collide( player, collectibles, collide_collectItem );
 		FlxG.collide( player, enemies, collide_hitEnemy );
 	}	
 		
-	private function updateFloorLighting():Void {
-		var curTileX = Std.int( player.x / TILE_WIDTH );
-		var curTileY = Std.int( player.y / TILE_HEIGHT );
-		
-		if ( lastFloorTileX == curTileX && lastFloorTileY == curTileY ) { 
-			return;
-		}
-		
-		lastFloorTileX = curTileX;
-		lastFloorTileY = curTileY;
-		
-		for ( x in Std.int( Math.max( curTileX - 11, 0 ) )...Std.int( Math.min( curTileX + 12, floor.widthInTiles  ) ) ) {
-			for ( y in Std.int( Math.max( curTileY - 11, 0 ) )...Std.int( Math.min( curTileY + 12, floor.heightInTiles ) ) ) {
-				var dist = Math.sqrt( Math.pow( curTileX - x, 2 ) + Math.pow( curTileY - y, 2 ) );
-				var tileNum = Std.int( Math.ceil( 6 - Math.min( 6, dist ) ) );
-				floor.setTile( x, y, 
-					map.ray( new FlxPoint( player.x, player.y ), 
-					new FlxPoint( x * TILE_WIDTH + 8, y * TILE_HEIGHT + 8), null, 2 ) ? tileNum : 0, true );
-			}
-		}
-		Lambda.iter( collectibles.members, iter_adjustSpriteBrightness );
-	}
+	//private function updateFloorLighting():Void {
+		//var curTileX = Std.int( player.x / TILE_WIDTH );
+		//var curTileY = Std.int( player.y / TILE_HEIGHT );
+		//
+		//if ( lastFloorTileX == curTileX && lastFloorTileY == curTileY ) { 
+			//return;
+		//}
+		//
+		//lastFloorTileX = curTileX;
+		//lastFloorTileY = curTileY;
+		//
+		//for ( x in Std.int( Math.max( curTileX - 11, 0 ) )...Std.int( Math.min( curTileX + 12, floor.widthInTiles  ) ) ) {
+			//for ( y in Std.int( Math.max( curTileY - 11, 0 ) )...Std.int( Math.min( curTileY + 12, floor.heightInTiles ) ) ) {
+				//var dist = Math.sqrt( Math.pow( curTileX - x, 2 ) + Math.pow( curTileY - y, 2 ) );
+				//var tileNum = Std.int( Math.ceil( 6 - Math.min( 6, dist ) ) );
+				//floor.setTile( x, y, 
+					//map.ray( new FlxPoint( player.x, player.y ), 
+					//new FlxPoint( x * TILE_WIDTH + 8, y * TILE_HEIGHT + 8), null, 2 ) ? tileNum : 0, true );
+			//}
+		//}
+		//Lambda.iter( collectibles.members, iter_adjustSpriteBrightness );
+	//}
 	
 	private function playerAttack( hitPt:FlxPoint ) {
 		Lambda.iter( enemies.members, function( enemy:Enemy ):Void { 
@@ -193,12 +193,12 @@ class GameState extends FlxState {
 		} );
 	}
 	
-	private function iter_adjustSpriteBrightness( coll:FlxSprite ) {
-		if ( coll.exists ) {
-			var factor:Int = Std.int( 0xff * floor.getTile( Std.int( coll.x / 16 ), Std.int( coll.y / 16 ) ) / 7 );
-			coll.color = 0xff << 25 | factor << 16 | factor << 8 | factor << 0;
-		}
-	}
+	//private function iter_adjustSpriteBrightness( coll:FlxSprite ) {
+		//if ( coll.exists ) {
+			//var factor:Int = Std.int( 0xff * floor.getTile( Std.int( coll.x / 16 ), Std.int( coll.y / 16 ) ) / 7 );
+			//coll.color = 0xff << 25 | factor << 16 | factor << 8 | factor << 0;
+		//}
+	//}
 	
 	private function iter_unexistSprite( spr:FlxSprite ) {
 		spr.exists = false;
