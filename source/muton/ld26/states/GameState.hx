@@ -134,12 +134,14 @@ class GameState extends FlxState {
 				enemy = enemies.recycle( Fiyonarr );
 				fiyonarr = cast( enemy, Fiyonarr );
 			}
+			enemy.setRouteFinderMap( map );
 			enemy.setup( conf.enemies.get( en.id ) );
 			enemy.active = true;
 			enemy.exists = true;
 			enemy.x = en.x;
 			enemy.y = en.y;
-			enemy.followPath( Config.routeToPath( en.route ), 100, FlxObject.PATH_LOOP_BACKWARD );
+			//enemy.followPath( Config.routeToPath( en.route ), 100, FlxObject.PATH_LOOP_BACKWARD );
+			enemy.lookBusy();
 		}
 		
 		player.x = TILE_WIDTH * curLevel.startTile[0];

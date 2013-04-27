@@ -11,4 +11,10 @@ class Fiyonarr extends Enemy {
 		super();
 	}
 	
+	override private function setupRoutes():Dynamic {
+		super.setupRoutes();
+		
+		routes.push( [ [40, 30], [28, 15], [65, 45] ] );
+	}
+	
 }

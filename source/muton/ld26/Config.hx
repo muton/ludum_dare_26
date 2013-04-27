@@ -127,10 +127,10 @@ class Config {
 		levels = conf.levels;
 	}
 	
-	public static function routeToPath( route:Array<Array<Int>> ):FlxPath {
+	public static function routeToPath( route:Array<Array<Int>>, multiplicationFactor:Float = 1 ):FlxPath {
 		var path = new FlxPath();
 		for ( coord in route ) {
-			path.add( coord[0], coord[1] );
+			path.add( coord[0] * multiplicationFactor, coord[1] * multiplicationFactor );
 		}
 		return path;
 	}
