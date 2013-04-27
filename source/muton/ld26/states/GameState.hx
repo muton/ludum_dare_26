@@ -10,23 +10,18 @@ import muton.ld26.game.Fiyonarr;
 import muton.ld26.game.Player;
 import muton.ld26.game.SFX;
 import muton.ld26.game.TouchUI;
-import muton.ld26.util.Lighting;
 import muton.ld26.util.TileMapUtil;
 import nme.Assets;
 import nme.events.Event;
-import nme.utils.Timer;
 import org.flixel.FlxCamera;
 import org.flixel.FlxG;
 import org.flixel.FlxGroup;
 import org.flixel.FlxObject;
 import org.flixel.FlxPoint;
-import org.flixel.FlxRect;
-import org.flixel.FlxSound;
 import org.flixel.FlxSprite;
 import org.flixel.FlxState;
 import org.flixel.FlxTilemap;
 import org.flixel.FlxTypedGroup;
-import org.flixel.FlxU;
 import org.flixel.plugin.photonstorm.FlxVelocity;
 
 class GameState extends FlxState {
