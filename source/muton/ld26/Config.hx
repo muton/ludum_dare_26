@@ -98,7 +98,8 @@ typedef CutSceneFrame = {
 typedef SceneryInfo = {
 	id:String,
 	widthTiles:Int,
-	heightTiles:Int
+	heightTiles:Int,
+	interactive:Bool
 }
 
 typedef SceneryPlace = {
@@ -157,7 +158,7 @@ class Config {
 		var colour = 0xFFF0F0F0;
 		scenery = new Hash<SceneryInfo>();
 		var itemList = [
-			["dustbin", "3x3"],
+			["dustbin", "3x3", "y"],	// knock it over
 			["spaceship", "4x13"],
 			["pond", "5x45"],
 			["outdoor_seat", "3x3"],
@@ -166,20 +167,21 @@ class Config {
 			["dining_chair", "2x3"],
 			["kitchen_unit_h", "10x5"],
 			["kitchen_unit_v", "4x20"],
-			["toilet", "3x2"],
+			["toilet", "3x2", "y"],	// block it
 			["shower", "13x5"],
-			["basin", "3x2"],
-			["bed", "15x10"],
-			["entropy_stack", "4x4"],
-			["kitchen_sink", "4x5"],
-			["hi_fi", "3x3"],
-			["dish_washer", "1x5"],
-			["bin", "2x2"]
+			["basin", "3x2", "y"],  // rearrange toiletries
+			["bed", "15x10", "y"], // unmake
+			["entropy_stack", "4x4", "y"], //special
+			["kitchen_sink", "4x5", "y"], // fill with pots and pans
+			["hi_fi", "3x3", "y"], // change the music
+			["dish_washer", "1x5", "y"], // sabotage
+			["bin", "2x2", "y"] // tip
 		];
 		
 		for ( arr in itemList ) {
 			var dim:Array<String> = arr[1].split( "x" );
-			var scn:SceneryInfo = { "id":arr[0], "widthTiles":Std.parseInt( dim[0] ), "heightTiles":Std.parseInt( dim[1] ) };
+			var scn:SceneryInfo = { "id":arr[0], "widthTiles":Std.parseInt( dim[0] ), "heightTiles":Std.parseInt( dim[1] ),
+				"interactive": arr.length > 2 && arr[2] == "y" };
 			scenery.set( scn.id, scn );
 		}
 	}

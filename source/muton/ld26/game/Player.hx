@@ -1,8 +1,10 @@
 package muton.ld26.game;
+import nme.utils.Timer;
 import org.flixel.FlxG;
 import org.flixel.FlxObject;
 import org.flixel.FlxPoint;
 import org.flixel.FlxSprite;
+import org.flixel.FlxTimer;
 
 /**
  * ...
@@ -14,11 +16,12 @@ class Player extends FlxSprite {
 	private static inline var WALK_SPEED:Float = 80;
 	
 	private var facingAnims:IntHash<String>;
-	private var attackFunc:FlxPoint->Void;
+	private var interactFunc:FlxPoint->Void;
+	private var justInteracted:Bool;
 	
-	public function new( x:Float, y:Float, attackFunc:FlxPoint->Void ) {
+	public function new( x:Float, y:Float, interactFunc:FlxPoint->Void ) {
 		super( x, y );
-		this.attackFunc = attackFunc;
+		this.interactFunc = interactFunc;
 		
 		facingAnims = new IntHash<String>();
 		facingAnims.set( FlxObject.LEFT, "left" );
@@ -58,15 +61,19 @@ class Player extends FlxSprite {
 			play( facingAnims.get( facing ) );
 		} 
 		
-		if ( ctrl.fireA ) { 
-			var attackPt:FlxPoint = new FlxPoint( x + origin.x, y + origin.y );
+		if ( ctrl.fireA && !justInteracted ) { 
+			var interactPt:FlxPoint = new FlxPoint( x + origin.x, y + origin.y );
+			justInteracted = true;
+			var timer = new FlxTimer();
+			timer.start( 0.5, 1, function( timer:FlxTimer ) { justInteracted = false; } );
+			
 			switch ( facing ) {
-				case FlxObject.LEFT: attackPt.x -= width;
-				case FlxObject.RIGHT: attackPt.x += width;
-				case FlxObject.UP: attackPt.y -= height;
-				case FlxObject.DOWN: attackPt.y += height;
+				case FlxObject.LEFT: interactPt.x -= width;
+				case FlxObject.RIGHT: interactPt.x += width;
+				case FlxObject.UP: interactPt.y -= height;
+				case FlxObject.DOWN: interactPt.y += height;
 			}
-			attackFunc( attackPt );
+			interactFunc( interactPt );
 		}
 		
 		super.update();

@@ -24,6 +24,8 @@ import org.flixel.FlxSprite;
 import org.flixel.FlxState;
 import org.flixel.FlxTilemap;
 import org.flixel.FlxTypedGroup;
+import org.flixel.FlxU;
+import org.flixel.plugin.photonstorm.FlxCollision;
 import org.flixel.plugin.photonstorm.FlxVelocity;
 
 class GameState extends FlxState {
@@ -80,7 +82,7 @@ class GameState extends FlxState {
 		enemies = new FlxTypedGroup<Enemy>( 2 );
 		add( enemies );
 		
-		player = new Player( 0, 0, playerAttack );
+		player = new Player( 0, 0, playerInteract );
 		add( player );
 		
 		overlay = new FlxTypedGroup<FlxGroup>( 10 );
@@ -234,10 +236,11 @@ class GameState extends FlxState {
 		//Lambda.iter( collectibles.members, iter_adjustSpriteBrightness );
 	//}
 	
-	private function playerAttack( hitPt:FlxPoint ) {
-		Lambda.iter( enemies.members, function( enemy:Enemy ):Void { 
-			if ( enemy.overlapsPoint( hitPt ) ) {
-				enemy.kill();
+	private function playerInteract( hitPt:FlxPoint ) {
+		Lambda.iter( scenery.members, function( sc:Scenery ) {
+			if ( sc.exists && sc.info.interactive 
+				&& FlxCollision.pixelPerfectPointCheck( Std.int( hitPt.x ), Std.int( hitPt.y ), sc ) ) {
+				trace( "ITERACT WITH " + sc.info.id );
 			}
 		} );
 	}
