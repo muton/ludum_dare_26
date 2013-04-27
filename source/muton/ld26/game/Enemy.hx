@@ -1,13 +1,13 @@
 package muton.ld26.game;
 import muton.ld26.Config;
-import muton.ld26.util.TileMapUtil;
+import muton.ld26.Config.EnemyInfo;
 import org.flixel.FlxG;
 import org.flixel.FlxPath;
 import org.flixel.FlxPoint;
 import org.flixel.FlxSound;
 import org.flixel.FlxSprite;
-import muton.ld26.Config.EnemyInfo;
 import org.flixel.FlxTilemap;
+import org.flixel.FlxTimer;
 import org.flixel.plugin.photonstorm.FlxDelay;
 import org.flixel.plugin.photonstorm.FlxVelocity;
 
@@ -34,6 +34,7 @@ class Enemy extends FlxSprite {
 	private var lastFxPath:String;
 	
 	private var currentClutterTarget:Scenery;
+	private var dealingWithClutterTimer:FlxTimer;
 	
 	public function new() {
 		super( 0, 0 );
@@ -69,6 +70,7 @@ class Enemy extends FlxSprite {
 	}
 	
 	public function runTo( pt:FlxPoint ) {
+		stopTidying();
 		currentRoute = null;
 		cancelWait();
 		var path = routeFinderMap.findPath( new FlxPoint( x, y ), pt );
@@ -77,14 +79,20 @@ class Enemy extends FlxSprite {
 	
 	public function tidyClutter( clutteredThing:Scenery ):Void {
 		if ( !isTidying() && !clutteredThing.getBeingTidied() ) {
+			
+			// find a way to the clutter
+			var path = routeFinderMap.findPath( new FlxPoint( x, y ), clutteredThing.tidyLoc );
+			if ( null == path ) {
+				trace( "Failed to find path to " + (x / 9) + "," + (y / 9) );
+				return;
+			} 
+			
 			currentClutterTarget = clutteredThing;
 			clutteredThing.setBeingTidied( true );
 			cancelWait();
 			stopFollowingPath( true );
 			currentRoute = null;
 			
-			// find a way to the clutter
-			var path = routeFinderMap.findPath( new FlxPoint( x, y ), clutteredThing.tidyLoc );
 			followPath( path, normSpeed );
 		}
 	}
@@ -93,6 +101,10 @@ class Enemy extends FlxSprite {
 		if ( isTidying() ) {
 			currentClutterTarget.setBeingTidied( false );
 		}
+		if ( null != dealingWithClutterTimer ) {
+			dealingWithClutterTimer.stop();
+			dealingWithClutterTimer = null;
+		}
 	}
 	
 	public function isTidying():Bool {
@@ -100,17 +112,15 @@ class Enemy extends FlxSprite {
 	}
 	
 	private function moveToNextStage():Void {
-		trace( info.id + " moveToNextStage() " );
 		if ( null == currentRoute || currentRoute.nodes.length == 0 ) { 
 			currentRoute = null;
-			trace( "Route finished" );
 			onNothingToDo( this );
 			return;
 		}
 		var pt = currentRoute.removeAt( 0 );
 		var path = routeFinderMap.findPath( new FlxPoint( x, y ), pt );
 		if ( path == null ) { 
-			trace( "couldn't get route to " + pt.x + ", " + pt.y );
+			trace( info.id + " couldn't get route to " + pt.x + ", " + pt.y );
 		} else {
 			followPath( path, normSpeed );
 		}
@@ -145,8 +155,18 @@ class Enemy extends FlxSprite {
 		super.update();
 		if ( null != currentClutterTarget ) {
 			// we should be on route to clutter
-			if ( FlxVelocity.distanceToPoint( this, currentClutterTarget.tidyLoc ) < 10 ) {
-				trace( "Can start tidying " + currentClutterTarget.info.id );
+			if ( null == dealingWithClutterTimer && FlxVelocity.distanceToPoint( this, currentClutterTarget.tidyLoc ) < 10 ) {
+				trace( info.id + " starting to tidy " + currentClutterTarget.info.id );
+				stopFollowingPath( true );
+				dealingWithClutterTimer = new FlxTimer();
+				dealingWithClutterTimer.start( currentClutterTarget.timeTakenToTidy, 1, function ( t:FlxTimer ) {
+					trace( info.id + " finished dealing with clutter on " + currentClutterTarget.info.id );
+					currentClutterTarget.setCluttered( false );
+					currentClutterTarget.setBeingTidied( false );
+					currentClutterTarget = null;
+					dealingWithClutterTimer = null;
+					onNothingToDo( this );
+				} );
 			}
 		} else if ( null == delay && 0 == pathSpeed ) {
 			//currentRoute = null;
