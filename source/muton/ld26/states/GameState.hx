@@ -8,6 +8,7 @@ import muton.ld26.game.Dayvidd;
 import muton.ld26.game.Enemy;
 import muton.ld26.game.Fiyonarr;
 import muton.ld26.game.Player;
+import muton.ld26.game.SFX;
 import muton.ld26.game.TouchUI;
 import muton.ld26.util.Lighting;
 import muton.ld26.util.TileMapUtil;
@@ -20,6 +21,7 @@ import org.flixel.FlxGroup;
 import org.flixel.FlxObject;
 import org.flixel.FlxPoint;
 import org.flixel.FlxRect;
+import org.flixel.FlxSound;
 import org.flixel.FlxSprite;
 import org.flixel.FlxState;
 import org.flixel.FlxTilemap;
@@ -237,6 +239,11 @@ class GameState extends FlxState {
 				new FlxPoint( player.x + player.origin.x, player.y + player.origin.y ) ) ) {
 				
 				trace( "Enemy " + enemy.info.id + " can see you!!!!! " + Math.random() );
+				if ( enemy == fiyonarr ) { 
+					enemy.speak( SFX.FY_WHATS_THAT );
+				} else {
+					enemy.speak( SFX.DA_WHATS_THAT );
+				}
 			}
 		}
 	}

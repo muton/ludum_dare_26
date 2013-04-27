@@ -4,6 +4,7 @@ import muton.ld26.util.TileMapUtil;
 import org.flixel.FlxG;
 import org.flixel.FlxPath;
 import org.flixel.FlxPoint;
+import org.flixel.FlxSound;
 import org.flixel.FlxSprite;
 import muton.ld26.Config.EnemyInfo;
 import org.flixel.FlxTilemap;
@@ -28,8 +29,22 @@ class Enemy extends FlxSprite {
 	private var routeFinderMap:FlxTilemap;
 	private var delay:FlxDelay;
 	
+	private var voice:FlxSound;
+	private var lastFxPath:String;
+	
 	public function new() {
 		super( 0, 0 );
+		voice = new FlxSound();
+	}
+	
+	public function speak( fxPath:String ) {
+		if ( voice.playing && lastFxPath == fxPath ) {
+			return;
+		}
+		lastFxPath = fxPath;
+		voice.stop();
+		voice.loadEmbedded( fxPath, false, false );
+		voice.play( true );
 	}
 	
 	private function setupRoutes() {

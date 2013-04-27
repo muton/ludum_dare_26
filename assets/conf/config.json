@@ -34,18 +34,14 @@
 			"mapPath": "assets/conf/level1_map.txt",
 			"startTile": [25, 65],
 			"items": [
-				{ "id": "example", "x": 100, "y": 20 },
-				{ "id": "example", "x": 200, "y": 60 },
-				{ "id": "example", "x": 100, "y": 300 }
+				{ "id": "example", "x": 100, "y": 20 }
 			],
 			"enemies": [
 				{ 
-					"id": "dayvidd", "x": 150, "y": 30, 
-					"route": [ [250,30], [150,30] ] 
+					"id": "dayvidd", "x": 150, "y": 30, "route": [] 
 				},
 								{ 
-					"id": "fiyonarr", "x": 350, "y": 30, 
-					"route": [ [350,30], [250,80] ] 
+					"id": "fiyonarr", "x": 350, "y": 30, "route": [] 
 				} 
 
 			]
