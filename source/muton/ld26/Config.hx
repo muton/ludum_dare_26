@@ -1,4 +1,5 @@
 package muton.ld26;
+import haxe.Int32;
 import haxe.Json;
 import nme.Assets;
 import org.flixel.FlxPath;
@@ -13,7 +14,8 @@ typedef GameConf = {
 	levels:Array<LevelInfo>,
 	collectibles:Array<CollectibleInfo>,
 	capSequences:Array<CaptionSequence>,
-	cutScenes:Array<CutScene>
+	cutScenes:Array<CutScene>,
+	sceneryPlaces:Array<SceneryPlace>
 }
 
 typedef AnimInfo = {
@@ -93,6 +95,17 @@ typedef CutSceneFrame = {
 	captions:Array<Caption>
 }
 
+typedef SceneryInfo = {
+	id:String,
+	widthTiles:Int,
+	heightTiles:Int
+}
+
+typedef SceneryPlace = {
+	id:String,
+	loc:Array<Int>
+}
+
 class Config {
 
 	public var enemies:Hash<EnemyInfo>;
@@ -100,6 +113,8 @@ class Config {
 	public var collectibles:Hash<CollectibleInfo>;
 	public var capSequences:Hash<CaptionSequence>;
 	public var cutScenes:Hash<CutScene>;
+	public var scenery:Hash<SceneryInfo>;
+	public var sceneryPlaces:Array<SceneryPlace>;
 	
 	public function new( path:String ) {
 		var conf:GameConf = Json.parse( Assets.getText( path ) );
@@ -124,7 +139,10 @@ class Config {
 			cutScenes.set( cut.id, cut );
 		}
 		
+		sceneryPlaces = conf.sceneryPlaces;
 		levels = conf.levels;
+		
+		genScenery();
 	}
 	
 	public static function routeToPath( route:Array<Array<Int>>, multiplicationFactor:Float = 1 ):FlxPath {
@@ -133,5 +151,36 @@ class Config {
 			path.add( coord[0] * multiplicationFactor, coord[1] * multiplicationFactor );
 		}
 		return path;
+	}
+	
+	private function genScenery():Void {
+		var colour = 0xFFF0F0F0;
+		scenery = new Hash<SceneryInfo>();
+		var itemList = [
+			["dustbin", "3x3"],
+			["spaceship", "6x13"],
+			["pond", "5x45"],
+			["outdoor_seat", "3x3"],
+			["bench", "15x4"],
+			["dining_table", "6x15"],
+			["dining_chair", "2x3"],
+			["kitchen_unit_h", "10x5"],
+			["kitchen_unit_v", "4x20"],
+			["toilet", "3x2"],
+			["shower", "14x5"],
+			["basin", "3x2"],
+			["bed", "15x10"],
+			["entropy_stack", "4x4"],
+			["kitchen_sink", "4x5"],
+			["hi_fi", "3x3"],
+			["dish_washer", "1x5"],
+			["bin", "2x2"]
+		];
+		
+		for ( arr in itemList ) {
+			var dim:Array<String> = arr[1].split( "x" );
+			var scn:SceneryInfo = { "id":arr[0], "widthTiles":Std.parseInt( dim[0] ), "heightTiles":Std.parseInt( dim[1] ) };
+			scenery.set( scn.id, scn );
+		}
 	}
 }

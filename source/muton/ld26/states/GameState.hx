@@ -8,6 +8,7 @@ import muton.ld26.game.Dayvidd;
 import muton.ld26.game.Enemy;
 import muton.ld26.game.Fiyonarr;
 import muton.ld26.game.Player;
+import muton.ld26.game.Scenery;
 import muton.ld26.game.SFX;
 import muton.ld26.game.TouchUI;
 import muton.ld26.util.TileMapUtil;
@@ -42,6 +43,7 @@ class GameState extends FlxState {
 	private var map:FlxTilemap;
 	
 	private var collectibles:FlxTypedGroup<Collectible>;
+	private var scenery:FlxTypedGroup<Scenery>;
 	private var enemies:FlxTypedGroup<Enemy>;
 	private var player:Player;
 	private var dayvidd:Dayvidd;
