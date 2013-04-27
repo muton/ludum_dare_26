@@ -140,7 +140,7 @@ class GameState extends FlxState {
 		for ( scp in conf.sceneryPlaces ) { 
 			var inf = conf.scenery.get( scp.id );
 			var chunk = scenery.recycle( Scenery );
-			chunk.setup( inf );
+			chunk.setup( inf, Config.tileCoordToPoint( scp.tidyLoc ) );
 			chunk.x = scp.loc[0] * TILE_WIDTH;
 			chunk.y = scp.loc[1] * TILE_HEIGHT;
 			chunk.exists = true;
@@ -151,16 +151,16 @@ class GameState extends FlxState {
 			}
 		}
 		
-		Lambda.iter( collectibles.members, iter_unexistSprite );
-		
-		for ( itm in curLevel.items ) {
-			var coll = collectibles.recycle( Collectible );
-			coll.setup( conf.collectibles.get( itm.id ) );
-			coll.x = itm.x;
-			coll.y = itm.y;
-			coll.exists = true;
-			coll.alive = true;
-		}
+		//Lambda.iter( collectibles.members, iter_unexistSprite );
+		//
+		//for ( itm in curLevel.items ) {
+			//var coll = collectibles.recycle( Collectible );
+			//coll.setup( conf.collectibles.get( itm.id ) );
+			//coll.x = itm.x;
+			//coll.y = itm.y;
+			//coll.exists = true;
+			//coll.alive = true;
+		//}
 		
 		Lambda.iter( enemies.members, iter_unexistSprite );
 		
@@ -284,10 +284,15 @@ class GameState extends FlxState {
 	}
 	
 	private function iter_canSeeClutter( enemy:Enemy ) {
+		// don't look for more clutter if we're already charging towards some
+		if ( enemy.isTidying() ) { return; }
+		
 		for ( sc in scenery.members ) {
 			if ( sc.exists && sc.getCluttered() && enemyCanSee( enemy, sc ) ) {
 				enemy.speak( enemy == fiyonarr ? SFX.FY_CLUTTER : SFX.DA_CLUTTER );
 				trace( enemy.info.id + " found clutter!" );
+				enemy.tidyClutter( sc );
+				break;
 			}
 		}
 	}

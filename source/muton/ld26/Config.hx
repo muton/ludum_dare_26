@@ -3,6 +3,7 @@ import haxe.Int32;
 import haxe.Json;
 import nme.Assets;
 import org.flixel.FlxPath;
+import org.flixel.FlxPoint;
 
 /**
  * ...
@@ -104,7 +105,8 @@ typedef SceneryInfo = {
 
 typedef SceneryPlace = {
 	id:String,
-	loc:Array<Int>
+	loc:Array<Int>,
+	?tidyLoc:Array<Int>
 }
 
 class Config {
@@ -152,6 +154,11 @@ class Config {
 			path.add( coord[0] * multiplicationFactor, coord[1] * multiplicationFactor );
 		}
 		return path;
+	}
+	
+	public static inline function tileCoordToPoint( tileCoord:Array<Int> ):FlxPoint {
+		if ( null == tileCoord || tileCoord.length != 2 ) { return null; }
+		return new FlxPoint( tileCoord[0] * 9, tileCoord[1] * 9 );
 	}
 	
 	private function genScenery():Void {

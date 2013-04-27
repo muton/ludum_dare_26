@@ -9,6 +9,7 @@ import org.flixel.FlxSprite;
 import muton.ld26.Config.EnemyInfo;
 import org.flixel.FlxTilemap;
 import org.flixel.plugin.photonstorm.FlxDelay;
+import org.flixel.plugin.photonstorm.FlxVelocity;
 
 /**
  * ...
@@ -31,6 +32,8 @@ class Enemy extends FlxSprite {
 	
 	private var voice:FlxSound;
 	private var lastFxPath:String;
+	
+	private var currentClutterTarget:Scenery;
 	
 	public function new() {
 		super( 0, 0 );
@@ -70,6 +73,30 @@ class Enemy extends FlxSprite {
 		cancelWait();
 		var path = routeFinderMap.findPath( new FlxPoint( x, y ), pt );
 		followPath( path, fastSpeed );
+	}
+	
+	public function tidyClutter( clutteredThing:Scenery ):Void {
+		if ( !isTidying() && !clutteredThing.getBeingTidied() ) {
+			currentClutterTarget = clutteredThing;
+			clutteredThing.setBeingTidied( true );
+			cancelWait();
+			stopFollowingPath( true );
+			currentRoute = null;
+			
+			// find a way to the clutter
+			var path = routeFinderMap.findPath( new FlxPoint( x, y ), clutteredThing.tidyLoc );
+			followPath( path, normSpeed );
+		}
+	}
+	
+	private function stopTidying():Void {
+		if ( isTidying() ) {
+			currentClutterTarget.setBeingTidied( false );
+		}
+	}
+	
+	public function isTidying():Bool {
+		return null != currentClutterTarget;
 	}
 	
 	private function moveToNextStage():Void {
@@ -116,8 +143,12 @@ class Enemy extends FlxSprite {
 	
 	override public function update():Void {
 		super.update();
-		
-		if ( null == delay && 0 == pathSpeed ) {
+		if ( null != currentClutterTarget ) {
+			// we should be on route to clutter
+			if ( FlxVelocity.distanceToPoint( this, currentClutterTarget.tidyLoc ) < 10 ) {
+				trace( "Can start tidying " + currentClutterTarget.info.id );
+			}
+		} else if ( null == delay && 0 == pathSpeed ) {
 			//currentRoute = null;
 			moveToNextStage();
 		}
