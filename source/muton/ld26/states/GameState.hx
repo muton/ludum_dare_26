@@ -4,7 +4,9 @@ import muton.ld26.CaptionPlayer;
 import muton.ld26.Config;
 import muton.ld26.CutScenePlayer;
 import muton.ld26.game.Collectible;
+import muton.ld26.game.Dayvidd;
 import muton.ld26.game.Enemy;
+import muton.ld26.game.Fiyonarr;
 import muton.ld26.game.Player;
 import muton.ld26.game.TouchUI;
 import muton.ld26.util.Lighting;
@@ -40,6 +42,8 @@ class GameState extends FlxState {
 	private var collectibles:FlxTypedGroup<Collectible>;
 	private var enemies:FlxTypedGroup<Enemy>;
 	private var player:Player;
+	private var dayvidd:Dayvidd;
+	private var fiyonarr:Fiyonarr;
 	private var overlay:FlxTypedGroup<FlxGroup>;
 	
 	private var lastFloorTileX:Int;
@@ -61,7 +65,7 @@ class GameState extends FlxState {
 		collectibles = new FlxTypedGroup<Collectible>( 20 );
 		add( collectibles );
 		
-		enemies = new FlxTypedGroup<Enemy>( 20 );
+		enemies = new FlxTypedGroup<Enemy>( 2 );
 		add( enemies );
 		
 		player = new Player( 0, 0, playerAttack );
@@ -122,7 +126,14 @@ class GameState extends FlxState {
 		Lambda.iter( enemies.members, iter_unexistSprite );
 		
 		for ( en in curLevel.enemies ) {
-			var enemy:Enemy = enemies.recycle( Enemy );
+			var enemy:Enemy = null;
+			if ( en.id=="dayvidd" ) {
+				enemy = enemies.recycle( Dayvidd );
+				dayvidd = cast( enemy, Dayvidd );
+			} else if ( en.id=="fiyonarr" ) {
+				enemy = enemies.recycle( Fiyonarr );
+				fiyonarr = cast( enemy, Fiyonarr );
+			}
 			enemy.setup( conf.enemies.get( en.id ) );
 			enemy.active = true;
 			enemy.exists = true;

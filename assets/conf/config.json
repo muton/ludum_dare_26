@@ -1,18 +1,32 @@
 {
 	"enemies": [
 		{
-			"id": "simpleBot",
+			"id": "dayvidd",
 			"health": 2,
 			"mass": 10,
-			"spritePath": "assets/sprites/simple_bot_sheet.png",
-			"spriteWidth": 25,
-			"spriteHeight": 25,
+			"spritePath": "assets/sprites/dayvidd_sheet.png",
+			"spriteWidth": 18,
+			"spriteHeight": 27,
 			"moveAnim": {
-				"frameList": [1, 2, 3, 2],
+				"frameList": [0],
+				"fps": 6
+			},
+			"deadFrame": 0
+		},
+		{
+			"id": "fiyonarr",
+			"health": 2,
+			"mass": 10,
+			"spritePath": "assets/sprites/fiyonarr_sheet.png",
+			"spriteWidth": 18,
+			"spriteHeight": 27,
+			"moveAnim": {
+				"frameList": [0],
 				"fps": 6
 			},
 			"deadFrame": 0
 		}
+
 	],
 	"levels": [
 		{
@@ -26,9 +40,14 @@
 			],
 			"enemies": [
 				{ 
-					"id": "simpleBot", "x": 150, "y": 30, 
+					"id": "dayvidd", "x": 150, "y": 30, 
 					"route": [ [250,30], [150,30] ] 
+				},
+								{ 
+					"id": "fiyonarr", "x": 350, "y": 30, 
+					"route": [ [350,30], [250,80] ] 
 				} 
+
 			]
 		}
 	],
