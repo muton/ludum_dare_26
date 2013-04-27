@@ -13,6 +13,7 @@ import muton.ld26.util.Lighting;
 import muton.ld26.util.TileMapUtil;
 import nme.Assets;
 import nme.events.Event;
+import nme.utils.Timer;
 import org.flixel.FlxCamera;
 import org.flixel.FlxG;
 import org.flixel.FlxGroup;
@@ -135,7 +136,7 @@ class GameState extends FlxState {
 				fiyonarr = cast( enemy, Fiyonarr );
 			}
 			enemy.setRouteFinderMap( map );
-			enemy.setup( conf.enemies.get( en.id ) );
+			enemy.setup( conf.enemies.get( en.id ), onEnemyHasNothingToDo );
 			enemy.active = true;
 			enemy.exists = true;
 			enemy.x = en.x;
@@ -204,6 +205,15 @@ class GameState extends FlxState {
 				enemy.kill();
 			}
 		} );
+	}
+	
+	private function onEnemyHasNothingToDo( en:Enemy ) {
+		trace( en.info.id + " has nothing to do" );
+		if ( FlxG.random() > 0.2 ) { 
+			en.waitHere( 2 );
+		} else {
+			en.lookBusy();
+		}
 	}
 	
 	//private function iter_adjustSpriteBrightness( coll:FlxSprite ) {
