@@ -66,6 +66,7 @@ class GameState extends FlxState {
 	
 	private var lastFloorTileX:Int;
 	private var lastFloorTileY:Int;
+	private var alreadyDying:Bool;
 	
 	override public function create():Void {
 		super.create();
@@ -119,6 +120,8 @@ class GameState extends FlxState {
 		livesLeft = 3;
 		
 		resetLevel();
+		
+		captions.play( conf.capSequences.get( "intro" ) );
 	}
 	
 	override public function destroy():Void {
@@ -346,12 +349,20 @@ class GameState extends FlxState {
 	}
 	
 	private function playerKilled() {
+		if ( alreadyDying ) { 
+			return;
+		}
+		alreadyDying = true;
 		livesLeft--;
 		trace( "player killed! " + livesLeft + " lives left" );
-		FlxG.timeScale = 0.05;
+		FlxG.timeScale = 0.5;
+		FlxG.camera.color = 0x55ff6666;
 		FlxG.play( SFX.FX_ZAP );
-		var delay = new FlxDelay( 2000 );
+		var delay = new FlxDelay( 1000 );
 		delay.callbackFunction = function() { 
+			alreadyDying = false;
+			FlxG.timeScale = 1;
+			FlxG.camera.color = 0x00ffffff;
 			if ( livesLeft >= 0 ) {
 				resetLevel();
 			} else {
@@ -359,6 +370,7 @@ class GameState extends FlxState {
 				FlxG.switchState( new LoseState() );
 			}
 		}
+		delay.start();
 	}
 	
 	private function refreshDisorderScore() {

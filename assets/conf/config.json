@@ -94,13 +94,12 @@
 		{
 			"id": "intro",
 			"placements": [
-				{ "id": "tl", "x": 20, "y": 20, "width": 200, "color": "0x800080" },
-				{ "id": "br", "x": 20, "y": 20, "width": 100, "color": "0xFF0000", "fromRight": true, "fromBottom": true }
+				{ "id": "ml", "x": 20, "y": 150, "width": 150, "color": "0x0080FF" }
 			],
 			"timeline": [
-				{ "label": "Explore in the dark", "time": 0, "duration": 4, "placeId": "tl" },
-				{ "label": "There is nothing much to do", "time": 4, "duration": 4, "placeId": "tl" },
-				{ "label": "...yet", "time": 8, "duration": 4, "placeId": "br" }
+				{ "label": "Let's get rid of these invaders...", "time": 0, "duration": 5, "placeId": "ml" },
+				{ "label": "< Try disturbing those bins!", "time": 6, "duration": 5, "placeId": "ml" },
+				{ "label": "There are other things you can mess up too", "time": 15, "duration": 5, "placeId": "ml" }
 			]
 		}
 	],

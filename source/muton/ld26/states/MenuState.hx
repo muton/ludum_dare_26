@@ -37,7 +37,7 @@ class MenuState extends FlxState {
 		FlxDisplay.screenCenter( startBtn, true );
 		add( startBtn );
 		
-		var instructions = 'KEYS: Up, Down, Left, Right, Ctrl OR W, S, A, D, M
+		var instructions = 'KEYS:    Up, Down, Left, Right, Ctrl    OR    W, S, A, D, M
 An awful alien couple, DaYviDD and FiYoNAR, from the galactic megacity have invaded earth because property here is cheap. 
 They are minimalists and hate mess and disorder of any kind. Convince them to leave by making their living conditions unacceptable!
 Be careful, DaYviDD has a gun!
