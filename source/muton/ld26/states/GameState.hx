@@ -22,6 +22,7 @@ import org.flixel.FlxG;
 import org.flixel.FlxGroup;
 import org.flixel.FlxObject;
 import org.flixel.FlxPoint;
+import org.flixel.FlxSound;
 import org.flixel.FlxSprite;
 import org.flixel.FlxState;
 import org.flixel.FlxTilemap;
@@ -67,6 +68,12 @@ class GameState extends FlxState {
 		super.create();
 
 		FlxG.mouse.hide();
+		
+		FlxG.music = new FlxSound();
+		FlxG.music.loadStream( "soundtrack.mp3", true, true );
+		FlxG.music.volume = 1;
+		FlxG.music.survive = true;
+		FlxG.music.play();		
 		
 		conf = new Config( "assets/conf/config.json" );
 		
@@ -293,6 +300,7 @@ class GameState extends FlxState {
 		if ( livesLeft >= 0 ) {
 			resetLevel();
 		} else {
+			FlxG.music.stop();
 			FlxG.switchState( new MenuState() );
 		}
 	}
