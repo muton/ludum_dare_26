@@ -86,7 +86,6 @@
 		{ "id": "entropy_stack", "loc":[61,65], "tidyLoc":[62,62] },
 		{ "id": "entropy_stack", "loc":[65,63], "tidyLoc":[65,58] },
 		{ "id": "kitchen_sink", "loc":[45,25], "tidyLoc":[42,27] },
-		{ "id": "dish_washer", "loc":[44,35], "tidyLoc":[41,37] },
 		{ "id": "bin", "loc":[31,48], "tidyLoc":[35,47] },
 		{ "id": "bin", "loc":[31,51], "tidyLoc":[34,52] },
 		{ "id": "bin", "loc":[46,2], "tidyLoc":[49,3] }

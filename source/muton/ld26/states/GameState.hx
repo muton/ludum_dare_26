@@ -71,12 +71,6 @@ class GameState extends FlxState {
 
 		FlxG.mouse.hide();
 		
-		FlxG.music = new FlxSound();
-		FlxG.music.loadStream( "soundtrack.mp3", true, true );
-		FlxG.music.volume = 1;
-		FlxG.music.survive = true;
-		FlxG.music.play();		
-		
 		conf = new Config( "assets/conf/config.json" );
 		
 		floor = new FlxTilemap();
@@ -130,6 +124,15 @@ class GameState extends FlxState {
 	}
 	
 	private function resetLevel() {
+		
+		if ( null != FlxG.music ) {
+			FlxG.music.stop();
+		}
+		FlxG.music = new FlxSound();
+		FlxG.music.loadStream( "soundtrack.mp3", true, true );
+		FlxG.music.volume = 1;
+		FlxG.music.survive = true;
+		FlxG.music.play();		
 		
 		wallMap.loadMap( 
 			TileMapUtil.bmpToTileMapAlphaBinary( Assets.getBitmapData( "assets/conf/mapdata_walls.png" ) ), 
@@ -308,7 +311,7 @@ class GameState extends FlxState {
 			resetLevel();
 		} else {
 			FlxG.music.stop();
-			FlxG.switchState( new MenuState() );
+			FlxG.switchState( new LoseState() );
 		}
 	}
 	
@@ -320,6 +323,10 @@ class GameState extends FlxState {
 			}
 		}
 		statusDisplay.setDisorderLevel( disorder );
+		
+		if ( disorder >= 100 ) {
+			FlxG.switchState( new WinState() );
+		}
 	}
 	
 	//private function iter_adjustSpriteBrightness( coll:FlxSprite ) {

@@ -169,7 +169,6 @@ class Config {
 		var colour = 0xFFF0F0F0;
 		scenery = new Hash<SceneryInfo>();
 		var itemList = [
-			["dustbin", "3x3", "dustbin_sheet.png", "y", "5"],	// knock it over
 			["spaceship", "4x13", "spaceship.png"],
 			["pond", "5x45", "pond.png"],
 			["outdoor_seat", "3x3", "outdoor_seat.png"],
@@ -178,15 +177,16 @@ class Config {
 			["dining_chair", "2x3", "dining_chair.png"],
 			["kitchen_unit_h", "10x5", "kitchen_unit_h.png"],
 			["kitchen_unit_v", "4x20", "kitchen_unit_v.png"],
-			["toilet", "3x2", "toilet_sheet.png", "y", "10"],	// block it
 			["shower", "13x5", "shower.png"],
-			["basin", "2x3", "basin_sheet.png", "y", "5"],  // rearrange toiletries
-			["bed", "15x10", "bed_sheet.png", "y", "5"], // unmake
+			["dustbin", "3x3", "dustbin_sheet.png", "y", "7"],	// knock it over
+			["toilet", "3x2", "toilet_sheet.png", "y", "10"],	// block it
+			["basin", "2x3", "basin_sheet.png", "y", "8"],  // rearrange toiletries
+			["bed", "15x10", "bed_sheet.png", "y", "9"], // unmake
 			["entropy_stack", "4x4", "entropy_stack_sheet.png", "y", "7"], //special
-			["kitchen_sink", "4x5", "sink_sheet.png", "y", "8"], // fill with pots and pans
+			["kitchen_sink", "4x5", "sink_sheet.png", "y", "7"], // fill with pots and pans
 			["hi_fi", "3x3", "hi_fi_sheet.png", "y", "12"], // change the music
-			["dish_washer", "1x5", "", "y", "10"], // sabotage
-			["bin", "2x2", "bin_sheet.png", "y", "5"] // tip
+			["bin", "2x2", "bin_sheet.png", "y", "6"] // tip
+//			["dish_washer", "2x5", "", "y", "10"], // sabotage - skip it for now
 		];
 		
 		for ( arr in itemList ) {
