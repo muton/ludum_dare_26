@@ -35,7 +35,7 @@ class GameState extends FlxState {
 	private static inline var TILE_WIDTH:Int = 9;
 	private static inline var TILE_HEIGHT:Int = 9;
 	
-	public static inline var CAUGHT_RADIUS:Int = 110;
+	public static inline var CAUGHT_RADIUS:Int = 150;
 	public static inline var EYE_ANGLE:Float = 180;
 	
 	private var count:Int;
@@ -222,6 +222,7 @@ class GameState extends FlxState {
 		
 		switch ( count++ % 3 ) {
 			case 0: Lambda.iter( enemies.members, iter_canSeePlayer );
+			case 1: refreshDisorderScore();
 			case 2: Lambda.iter( enemies.members, iter_canSeeClutter );
 		}
 		
@@ -274,6 +275,16 @@ class GameState extends FlxState {
 			trace( "Killed by DaYviDD!!" );
 			resetLevel();
 		}
+	}
+	
+	private function refreshDisorderScore() {
+		var disorder = 0;
+		for ( scn in scenery.members ) {
+			if ( scn.exists && scn.info.interactive && scn.getCluttered() ) {
+				disorder += scn.info.clutterVal;
+			}
+		}
+		statusDisplay.setDisorderLevel( disorder );
 	}
 	
 	//private function iter_adjustSpriteBrightness( coll:FlxSprite ) {

@@ -13,9 +13,14 @@ class StatusDisplay extends FlxTypedGroup<FlxSprite> {
 
 	private static inline var BAR_WIDTH:Int = 150;
 	
+	private var livesTxt:FlxText;
+	private var disorderFgBar:FlxSprite;
+	
 	public function new() {
 		super();
 		createDisplay();
+		this.setAll( "alive", false );
+		this.setAll( "active", false );
 	}
 	
 	private function createDisplay() {
@@ -23,13 +28,13 @@ class StatusDisplay extends FlxTypedGroup<FlxSprite> {
 		var livesLeftIcon:FlxSprite = new FlxSprite( 4, 1, "assets/lives_icon.png" );
 		livesLeftIcon.scrollFactor.x = livesLeftIcon.scrollFactor.y = 0;
 	
-		var livesTxt:FlxText = new FlxText( 22, 2, 20, "0", 9, true );
+		livesTxt = new FlxText( 22, 2, 20, "0", 9, true );
 		livesTxt.color = 0xfff26522;
 		livesTxt.shadow = 0x66FFFFFF;
 		livesTxt.useShadow = true;
 		livesTxt.scrollFactor.x = livesTxt.scrollFactor.y = 0;
 		
-		var disorderFgBar:FlxSprite = new FlxSprite( FlxG.width - BAR_WIDTH - 4, 5 );
+		disorderFgBar = new FlxSprite( FlxG.width - BAR_WIDTH - 4, 5 );
 		disorderFgBar.scrollFactor.x = disorderFgBar.scrollFactor.y = 0;
 		disorderFgBar.makeGraphic( BAR_WIDTH, 8, 0xFF0000FF );
 		
@@ -43,12 +48,29 @@ class StatusDisplay extends FlxTypedGroup<FlxSprite> {
 		disorderLabel.shadow = 0x66FFFFFF;
 		disorderLabel.useShadow = true;
 		
-		
 		add( livesLeftIcon );
 		add( livesTxt );
 		add( disorderLabel );
 		add( disorderBgBar );
 		add( disorderFgBar );
+		
+		setLivesLeft( 0 );
+		setDisorderLevel( 0 );
+	}
+	
+	public function setLivesLeft( numLives:Int ) {
+		livesTxt.text = "" + numLives;
+	}
+	
+	/** disorder in the range between 0-100 */
+	public function setDisorderLevel( disorder:Float ) {
+		var barWidth = Math.min( 100, disorder ) / 100 * BAR_WIDTH;
+		if ( barWidth < 1 ) {
+			disorderFgBar.visible = false;
+		} else {
+			disorderFgBar.visible = true;
+			disorderFgBar.makeGraphic( Std.int( barWidth ), 8, 0xFF0000FF );
+		}
 	}
 	
 }
