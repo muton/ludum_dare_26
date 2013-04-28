@@ -70,6 +70,7 @@ class GameState extends FlxState {
 		super.create();
 
 		FlxG.mouse.hide();
+		FlxG.bgColor = 0xFF707070;
 		
 		conf = new Config( "assets/conf/config.json" );
 		
@@ -125,13 +126,11 @@ class GameState extends FlxState {
 	
 	private function resetLevel() {
 		
-		if ( null != FlxG.music ) {
-			FlxG.music.stop();
+		if ( null == FlxG.music ) {
+			FlxG.music = new FlxSound();
 		}
-		FlxG.music = new FlxSound();
 		FlxG.music.loadStream( "soundtrack.mp3", true, true );
 		FlxG.music.volume = 1;
-		FlxG.music.survive = true;
 		FlxG.music.play();		
 		
 		wallMap.loadMap( 
@@ -334,6 +333,7 @@ class GameState extends FlxState {
 		statusDisplay.setDisorderLevel( disorder );
 		
 		if ( disorder >= 100 ) {
+			FlxG.music.stop();
 			FlxG.switchState( new WinState() );
 		}
 	}
