@@ -1,5 +1,7 @@
 package muton.ld26.game;
+import org.flixel.FlxG;
 import org.flixel.FlxPoint;
+import org.flixel.FlxSound;
 import org.flixel.FlxSprite;
 import muton.ld26.Config.SceneryInfo;
 
@@ -48,12 +50,22 @@ class Scenery extends FlxSprite {
 	}
 	
 	public function setCluttered( cluttered:Bool ) {
+		var statusChanged:Bool = this.cluttered != cluttered;
 		this.cluttered = cluttered;
 		if ( info.assetPath == "" ) {
 			var colour = info.interactive ? 0xFFFFFF80 : 0xFFAEAEAE;
 			makeGraphic( info.widthTiles * 9, info.heightTiles * 9, cluttered ? 0xFFFF0000 : colour );
 		} else {
 			play( cluttered ? "cluttered" : "uncluttered" );
+		}
+		
+		if ( statusChanged && info.id == "hi_fi" ) {
+			FlxG.music.stop();
+			FlxG.music = new FlxSound();
+			FlxG.music.loadStream( cluttered ? "cacophony.mp3" : "soundtrack.mp3", true, true );
+			FlxG.music.volume = 1;
+			FlxG.music.survive = true;
+			FlxG.music.play();
 		}
 	}
 	
