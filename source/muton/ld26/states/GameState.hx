@@ -11,6 +11,7 @@ import muton.ld26.game.Places;
 import muton.ld26.game.Player;
 import muton.ld26.game.Scenery;
 import muton.ld26.game.SFX;
+import muton.ld26.game.StatusDisplay;
 import muton.ld26.game.TouchUI;
 import muton.ld26.util.TileMapUtil;
 import nme.Assets;
@@ -56,6 +57,7 @@ class GameState extends FlxState {
 	private var dayvidd:Dayvidd;
 	private var fiyonarr:Fiyonarr;
 	private var overlay:FlxTypedGroup<FlxGroup>;
+	private var statusDisplay:StatusDisplay;
 	
 	private var lastFloorTileX:Int;
 	private var lastFloorTileY:Int;
@@ -94,6 +96,9 @@ class GameState extends FlxState {
 		
 		cutScenes = new CutScenePlayer( overlay );
 		cutScenes.addEventListener( Event.COMPLETE, onCutSceneComplete, false, 0, true );
+		
+		statusDisplay = new StatusDisplay();
+		add( statusDisplay );
 		
 #if mobile		
 		add( new TouchUI( false ) );
