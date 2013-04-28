@@ -135,7 +135,8 @@ class GameState extends FlxState {
 		var bmpd:BitmapData = new BitmapData( TILE_WIDTH * 2, TILE_HEIGHT, true, 0xff000000 );
 		collisionMap.loadMap( blankArr, bmpd, TILE_WIDTH, TILE_HEIGHT );
 		
-		var colours = [0xffffff, 0x999999, 0xcccccc, 0x8888ff, 0xff8888];
+		//var colours = [0xffffff, 0x999999, 0xcccccc, 0x8888ff, 0xff8888];	// these are correct but it thinks they aren't
+		var colours = [0xFEFEFE, 0x989898, 0xCBCBCB, 0x8787FE, 0xFE8787];	// so screw it
 		floor.loadMap(
 			TileMapUtil.bmpToTileMapColourIndices( Assets.getBitmapData( "assets/conf/mapdata_floor.png", false ), colours ), 
 			Assets.getBitmapData( "assets/tiles/floor_tiles_9x9.png" ),

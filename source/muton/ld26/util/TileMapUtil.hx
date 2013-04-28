@@ -1,5 +1,4 @@
 package muton.ld26.util;
-import haxe.Int32;
 import flash.display.BitmapData;
 import org.flixel.plugin.photonstorm.FlxColor;
 
@@ -29,15 +28,11 @@ class TileMapUtil
 	}
 	
 	/** Returns a string suitable for feeding to FlxTileMap */
-	public static function bmpToTileMapColourIndices( bmp:BitmapData, colourList:Array<Int> ):String {
+	public static function bmpToTileMapColourIndices( bmp:BitmapData, colourList:Array<UInt> ):String {
 		
-		var colourMap:IntHash<Int> = new IntHash<Int>();
+		var colourMap = new Hash<Int>();
 		for ( i in 0...colourList.length ) {
-			colourMap.set( colourList[i], i );
-		}
-
-		for ( c in colourMap.keys() ) {
-			trace( "c: " + FlxColor.RGBtoWebString( c ) + ": " + colourMap.get( c ) );
+			colourMap.set( StringTools.hex( colourList[i], 6 ), i );
 		}
 		
 		var outStr:String = "";
@@ -45,13 +40,14 @@ class TileMapUtil
 		for ( y in 0...bmp.height ) {
 			var lineArr:Array<Int> = new Array<Int>();
 			for ( x in 0...bmp.width ) {
-				var px:UInt = bmp.getPixel32( x, y );
-				if ( y % 10 == 0 && x % 10 == 0 ) {
-					trace( "px: " + StringTools.hex( px, 8 ) );
-					trace( "   alpha: " + ( (px >> 24) & 0xFF ) );
-					
-				}
-				lineArr.push( colourMap.get( px ) );
+				//var rgb = FlxColor.getRGB( bmp.getPixel32( x, y ) );
+				//var px:Int = FlxColor.getColor24( rgb.red, rgb.green, rgb.blue );
+				//if ( y % 6 == 0 && x % 6 == 0 ) {
+					//trace( "px: " + StringTools.hex( px, 6 ) );
+					//trace( "   alpha: " + ( (px >> 24) & 0xFF ) );
+					//
+				//}
+				lineArr.push( colourMap.get( StringTools.hex( bmp.getPixel( x, y ), 6 ) ) );
 			}
 			outStr += "\n" + lineArr.join( "," );
 		}
