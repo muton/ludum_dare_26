@@ -91,7 +91,7 @@ class GameState extends FlxState {
 		enemies = new FlxTypedGroup<Enemy>( 2 );
 		add( enemies );
 		
-		player = new Player( 0, 0, playerInteract );
+		player = new Player( 0, 0, playerInteract, playerCheck );
 		add( player );
 		
 		overlay = new FlxTypedGroup<FlxGroup>( 10 );
@@ -287,6 +287,15 @@ class GameState extends FlxState {
 			}
 		} );
 	}
+	
+	private function playerCheck( hitPt:FlxPoint ) {
+		for ( sc in scenery.members ) {
+			if ( sc.exists && sc.info.interactive && !sc.getCluttered() && sc.overlapsPoint( hitPt ) ) {
+				return true;
+			}
+		}
+		return false;
+	}	
 	
 	private function onEnemyHasNothingToDo( en:Enemy ) {
 		if ( FlxG.random() > 0.3 ) { 

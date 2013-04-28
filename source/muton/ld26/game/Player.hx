@@ -17,11 +17,13 @@ class Player extends FlxSprite {
 	
 	private var facingAnims:IntHash<String>;
 	private var interactFunc:FlxPoint->Void;
+	private var checkFunc:FlxPoint->Bool;
 	private var justInteracted:Bool;
 	
-	public function new( x:Float, y:Float, interactFunc:FlxPoint->Void ) {
+	public function new( x:Float, y:Float, interactFunc:FlxPoint->Void, checkFunc:FlxPoint->Bool ) {
 		super( x, y );
 		this.interactFunc = interactFunc;
+		this.checkFunc = checkFunc;
 		
 		facingAnims = new IntHash<String>();
 		facingAnims.set( FlxObject.LEFT, "left" );
@@ -30,10 +32,11 @@ class Player extends FlxSprite {
 		facingAnims.set( FlxObject.DOWN, "down" );
 		
 		loadGraphic( "assets/sprites/player_sheet.png", true, false, 27, 27 );
-		addAnimation( "left", [0], 6, true );
-		addAnimation( "right", [0], 6, true );
-		addAnimation( "up", [0], 6, true );
-		addAnimation( "down", [0], 6, true );
+		addAnimation( "left", [1], 6, true );
+		addAnimation( "right", [1], 6, true );
+		addAnimation( "up", [1], 6, true );
+		addAnimation( "down", [1], 6, true );
+		addAnimation( "idea", [0], 6, true );
 		play( "right" );
 	}
 	
@@ -62,21 +65,30 @@ class Player extends FlxSprite {
 		} 
 		
 		if ( ctrl.fireA && !justInteracted ) { 
-			var interactPt:FlxPoint = new FlxPoint( x + origin.x, y + origin.y );
 			justInteracted = true;
 			var timer = new FlxTimer();
 			timer.start( 0.5, 1, function( timer:FlxTimer ) { justInteracted = false; } );
+			interactFunc( getInteractionPoint() );
 			
-			switch ( facing ) {
-				case FlxObject.LEFT: interactPt.x -= ( width / 2 + 5 );
-				case FlxObject.RIGHT: interactPt.x += ( width / 2 + 5 );
-				case FlxObject.UP: interactPt.y -= ( height / 2 + 5 );
-				case FlxObject.DOWN: interactPt.y += ( height / 2 + 5 );
+		} else if ( !justInteracted && velocity.x == 0 && velocity.y == 0 ) {
+			// we're stopped, we're not interacting and we want to check to see if we're in front of anything fun
+			if ( checkFunc( getInteractionPoint() ) ) {
+				play( "idea", true );
 			}
-			interactFunc( interactPt );
 		}
 		
 		super.update();
 	}
 	
+	private function getInteractionPoint():FlxPoint {
+		var interactPt = new FlxPoint( x + origin.x, y + origin.y );
+		
+		switch ( facing ) {
+			case FlxObject.LEFT: interactPt.x -= ( width / 2 + 5 );
+			case FlxObject.RIGHT: interactPt.x += ( width / 2 + 5 );
+			case FlxObject.UP: interactPt.y -= ( height / 2 + 5 );
+			case FlxObject.DOWN: interactPt.y += ( height / 2 + 5 );
+		}
+		return interactPt;
+	}
 }
