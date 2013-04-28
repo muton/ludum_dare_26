@@ -69,8 +69,9 @@ class GameState extends FlxState {
 		FlxG.mouse.hide();
 		
 		conf = new Config( "assets/conf/config.json" );
-		//floor = new FlxTilemap();
-		//add( floor );
+		
+		floor = new FlxTilemap();
+		add( floor );
 		
 		collisionMap = new FlxTilemap();
 		add( collisionMap );
@@ -122,7 +123,7 @@ class GameState extends FlxState {
 	private function resetLevel() {
 		
 		wallMap.loadMap( 
-			TileMapUtil.bmpToTileMap( Assets.getBitmapData( "assets/conf/mapdata_walls.png" ) ), 
+			TileMapUtil.bmpToTileMapAlphaBinary( Assets.getBitmapData( "assets/conf/mapdata_walls.png" ) ), 
 			Assets.getBitmapData( "assets/tiles/autotiles_9x9_walls.png" ),
 			9, 9, 0 );
 		wallMap.follow( null, -10, true );	// causes camera bounds to be set too
@@ -134,15 +135,11 @@ class GameState extends FlxState {
 		var bmpd:BitmapData = new BitmapData( TILE_WIDTH * 2, TILE_HEIGHT, true, 0xff000000 );
 		collisionMap.loadMap( blankArr, bmpd, TILE_WIDTH, TILE_HEIGHT );
 		
-		//floor.widthInTiles = map.widthInTiles;
-		//floor.heightInTiles = map.heightInTiles;
-		//var blankArr = new Array<Int>();
-		//for ( i in 0...map.totalTiles ) { blankArr.push( 0 ); }
-		//var floorTile:FlxSprite = new FlxSprite( 0, 0, "assets/tiles/floor_tile_16x16.png" );
-		//floor.loadMap(
-			//blankArr, 
-			//Lighting.genLightMapTileSet( 7, TILE_WIDTH, TILE_HEIGHT, 0.9, floorTile.pixels ),
-			//TILE_WIDTH, TILE_HEIGHT, FlxTilemap.OFF, 0, 1, 0 );
+		var colours = [0xffffff, 0x999999, 0xcccccc, 0x8888ff, 0xff8888];
+		floor.loadMap(
+			TileMapUtil.bmpToTileMapColourIndices( Assets.getBitmapData( "assets/conf/mapdata_floor.png", false ), colours ), 
+			Assets.getBitmapData( "assets/tiles/floor_tiles_9x9.png" ),
+			TILE_WIDTH, TILE_HEIGHT, 0, 0, 0, 0 );
 			
 			
 		// make the world bigger so tilemap collisions work, but camera doesn't stop at edge of play area
