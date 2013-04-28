@@ -27,7 +27,20 @@ class Scenery extends FlxSprite {
 		//loadGraphic( info.spritePath, info.anim.frameList.length > 1, false, info.spriteWidth, info.spriteHeight );
 		//addAnimation( "default", info.anim.frameList, info.anim.fps, info.anim.loop != false );
 		//play( "default" );
+		if ( info.assetPath != "" ) {
+			loadImages();
+		}
 		setCluttered( false );
+	}
+	
+	public function loadImages() {
+		if ( !info.interactive ) {
+			loadGraphic( info.assetPath );
+		} else {
+			loadGraphic( info.assetPath, true, false, info.widthTiles * 9, info.heightTiles * 9 );
+			addAnimation( "uncluttered", [0], 1 );
+			addAnimation( "cluttered", [1], 1 );
+		}
 	}
 	
 	public function getCluttered():Bool {
@@ -40,9 +53,7 @@ class Scenery extends FlxSprite {
 			var colour = info.interactive ? 0xFFFFFF80 : 0xFFAEAEAE;
 			makeGraphic( info.widthTiles * 9, info.heightTiles * 9, cluttered ? 0xFFFF0000 : colour );
 		} else {
-			trace( "loading " + info.assetPath );
-			loadGraphic( info.assetPath );
-			//TODO: cluttered graphics
+			play( cluttered ? "cluttered" : "uncluttered" );
 		}
 	}
 	

@@ -186,7 +186,7 @@ class Config {
 			["kitchen_sink", "4x5", "", "y", "8"], // fill with pots and pans
 			["hi_fi", "3x3", "", "y", "15"], // change the music
 			["dish_washer", "1x5", "", "y", "20"], // sabotage
-			["bin", "2x2", "", "y", "5"] // tip
+			["bin", "2x2", "bin_sheet.png", "y", "5"] // tip
 		];
 		
 		for ( arr in itemList ) {
