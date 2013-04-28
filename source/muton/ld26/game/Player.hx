@@ -68,10 +68,10 @@ class Player extends FlxSprite {
 			timer.start( 0.5, 1, function( timer:FlxTimer ) { justInteracted = false; } );
 			
 			switch ( facing ) {
-				case FlxObject.LEFT: interactPt.x -= width;
-				case FlxObject.RIGHT: interactPt.x += width;
-				case FlxObject.UP: interactPt.y -= height;
-				case FlxObject.DOWN: interactPt.y += height;
+				case FlxObject.LEFT: interactPt.x -= ( width / 2 + 5 );
+				case FlxObject.RIGHT: interactPt.x += ( width / 2 + 5 );
+				case FlxObject.UP: interactPt.y -= ( height / 2 + 5 );
+				case FlxObject.DOWN: interactPt.y += ( height / 2 + 5 );
 			}
 			interactFunc( interactPt );
 		}

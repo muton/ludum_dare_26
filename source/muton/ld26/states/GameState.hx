@@ -279,7 +279,7 @@ class GameState extends FlxState {
 	private function playerInteract( hitPt:FlxPoint ) {
 		Lambda.iter( scenery.members, function( sc:Scenery ) {
 			if ( sc.exists && sc.info.interactive 
-				&& FlxCollision.pixelPerfectPointCheck( Std.int( hitPt.x ), Std.int( hitPt.y ), sc ) ) {
+				&& sc.overlapsPoint( hitPt ) ) {
 				sc.setCluttered( true );
 			}
 		} );
