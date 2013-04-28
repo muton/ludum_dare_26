@@ -39,6 +39,7 @@ class GameState extends FlxState {
 	public static inline var EYE_ANGLE:Float = 180;
 	
 	private var count:Int;
+	private var livesLeft:Int;
 	
 	private var conf:Config;
 	private var captions:CaptionPlayer;
@@ -108,7 +109,14 @@ class GameState extends FlxState {
 		FlxG.camera.follow( player, FlxCamera.STYLE_TOPDOWN, null, 3 );
 		
 		curLevel = conf.levels[0];
+		
+		livesLeft = 3;
+		
 		resetLevel();
+	}
+	
+	override public function destroy():Void {
+		super.destroy();
 	}
 	
 	private function resetLevel() {
@@ -168,28 +176,37 @@ class GameState extends FlxState {
 		//}
 		
 		Lambda.iter( enemies.members, iter_unexistSprite );
+		enemies.callAll( "kill" );
+		enemies.callAll( "destroy" );
+		enemies.clear();
 		
 		for ( en in curLevel.enemies ) {
 			var enemy:Enemy = null;
 			if ( en.id=="dayvidd" ) {
-				enemy = enemies.recycle( Dayvidd );
-				dayvidd = cast( enemy, Dayvidd );
+				dayvidd = new Dayvidd();
+				enemy = dayvidd;
 			} else if ( en.id=="fiyonarr" ) {
-				enemy = enemies.recycle( Fiyonarr );
-				fiyonarr = cast( enemy, Fiyonarr );
+				fiyonarr = new Fiyonarr();
+				enemy = fiyonarr;
 			}
+			enemies.add( enemy );
 			enemy.setRouteFinderMap( collisionMap );
 			enemy.setup( conf.enemies.get( en.id ), onEnemyHasNothingToDo, onEnemySpottedPlayer );
 			enemy.active = true;
 			enemy.exists = true;
+			enemy.alive = true;
 			enemy.x = en.x;
 			enemy.y = en.y;
 			//enemy.followPath( Config.routeToPath( en.route ), 100, FlxObject.PATH_LOOP_BACKWARD );
 			enemy.lookBusy();
 		}
 		
+		trace( "just reset level, enemies members length is " + enemies.length );
+		
 		player.x = TILE_WIDTH * curLevel.startTile[0];
 		player.y = TILE_HEIGHT * curLevel.startTile[1];
+		
+		statusDisplay.setLivesLeft( livesLeft );
 		
 		testRoutesToAllLocations();
 	}
@@ -203,10 +220,6 @@ class GameState extends FlxState {
 		FlxG.timeScale = 1;
 	}
 	
-	override public function destroy():Void {
-		super.destroy();
-	}
-
 	override public function update():Void {
 		super.update();
 		
@@ -272,8 +285,17 @@ class GameState extends FlxState {
 		if ( en == fiyonarr ) {
 			dayvidd.runTo( new FlxPoint( fiyonarr.x, fiyonarr.y ) );
 		} else if ( en == dayvidd ) {
-			trace( "Killed by DaYviDD!!" );
+			playerKilled();
+		}
+	}
+	
+	private function playerKilled() {
+		livesLeft--;
+		trace( "player killed! " + livesLeft + " lives left" );
+		if ( livesLeft >= 0 ) {
 			resetLevel();
+		} else {
+			FlxG.switchState( new MenuState() );
 		}
 	}
 	
@@ -322,7 +344,7 @@ class GameState extends FlxState {
 	}
 	
 	private function collide_hitEnemy( objPlayer:FlxObject, objEnemy:FlxObject ) {
-		resetLevel();
+		playerKilled();
 	}
 	
 	private function enemyCanSee( enemy:Enemy, sprite:FlxSprite ):Bool {
