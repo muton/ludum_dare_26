@@ -172,12 +172,12 @@ class Config {
 			["dustbin", "3x3", "", "y", "10"],	// knock it over
 			["spaceship", "4x13", ""],
 			["pond", "5x45", "pond.png"],
-			["outdoor_seat", "3x3", ""],
-			["bench", "15x4", ""],
-			["dining_table", "6x14", ""],
-			["dining_chair", "2x3", ""],
-			["kitchen_unit_h", "10x5", ""],
-			["kitchen_unit_v", "4x20", ""],
+			["outdoor_seat", "3x3", "outdoor_seat.png"],
+			["bench", "15x4", "bench.png"],
+			["dining_table", "6x14", "dining_table.png"],
+			["dining_chair", "2x3", "dining_chair.png"],
+			["kitchen_unit_h", "10x5", "kitchen_unit_h.png"],
+			["kitchen_unit_v", "4x20", "kitchen_unit_v.png"],
 			["toilet", "3x2", "", "y", "10"],	// block it
 			["shower", "13x5", ""],
 			["basin", "3x2", "", "y", "5"],  // rearrange toiletries
@@ -194,7 +194,7 @@ class Config {
 			var scn:SceneryInfo = { "id":arr[0], "widthTiles":Std.parseInt( dim[0] ), "heightTiles":Std.parseInt( dim[1] ),
 				"assetPath": arr[2] == "" ? "" : "assets/scenery/" + arr[2],
 				"interactive": arr.length > 3 && arr[3] == "y", "clutterVal": Std.parseInt( arr.length > 4 ? arr[4] : "0" ) };
-			trace( "info: " + scn );
+			//trace( "info: " + scn );
 			scenery.set( scn.id, scn );
 		}
 	}
