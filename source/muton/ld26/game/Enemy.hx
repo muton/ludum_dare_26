@@ -47,9 +47,15 @@ class Enemy extends FlxSprite {
 	private var spotFx:String;
 	private var clutterFx:String;
 	
+	private var leftAnim:Array<Int>;
+	private var rightAnim:Array<Int>;
+	
 	public function new() {
 		super( 0, 0 );
 		voice = new FlxSound();
+		
+		leftAnim = [1];
+		rightAnim = [0];
 	}
 	
 	override public function destroy():Void {
@@ -230,9 +236,10 @@ class Enemy extends FlxSprite {
 		cancelWait();
 		setupRoutes();
 		
-		loadGraphic( info.spritePath, info.moveAnim.frameList.length > 1, false, info.spriteWidth, info.spriteHeight );
-		addAnimation( "move", info.moveAnim.frameList, info.moveAnim.fps, info.moveAnim.loop != false );
-		play( "move" );
+		loadGraphic( info.spritePath, true, false, info.spriteWidth, info.spriteHeight );
+		addAnimation( "left", leftAnim, 6, true );
+		addAnimation( "right", rightAnim, 6, true );
+		play( "left" );
 	}
 	
 	override public function update():Void {
@@ -261,6 +268,12 @@ class Enemy extends FlxSprite {
 			//currentRoute = null;
 			inARush = false;
 			moveToNextStage();
+		}
+		
+		if ( velocity.x > 0 ) {
+			play( "left" );
+		} else {
+			play( "right" );
 		}
 	}
 	
