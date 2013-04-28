@@ -36,8 +36,14 @@ class Scenery extends FlxSprite {
 	
 	public function setCluttered( cluttered:Bool ) {
 		this.cluttered = cluttered;
-		var colour = info.interactive ? 0xFFFFFF80 : 0xFFAEAEAE;
-		makeGraphic( info.widthTiles * 9, info.heightTiles * 9, cluttered ? 0xFFFF0000 : colour );
+		if ( info.assetPath == "" ) {
+			var colour = info.interactive ? 0xFFFFFF80 : 0xFFAEAEAE;
+			makeGraphic( info.widthTiles * 9, info.heightTiles * 9, cluttered ? 0xFFFF0000 : colour );
+		} else {
+			trace( "loading " + info.assetPath );
+			loadGraphic( info.assetPath );
+			//TODO: cluttered graphics
+		}
 	}
 	
 	public function getBeingTidied():Bool {
