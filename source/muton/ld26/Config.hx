@@ -178,9 +178,9 @@ class Config {
 			["dining_chair", "2x3", "dining_chair.png"],
 			["kitchen_unit_h", "10x5", "kitchen_unit_h.png"],
 			["kitchen_unit_v", "4x20", "kitchen_unit_v.png"],
-			["toilet", "3x2", "", "y", "10"],	// block it
+			["toilet", "3x2", "toilet_sheet.png", "y", "10"],	// block it
 			["shower", "13x5", "shower.png"],
-			["basin", "3x2", "", "y", "5"],  // rearrange toiletries
+			["basin", "2x3", "basin_sheet.png", "y", "5"],  // rearrange toiletries
 			["bed", "15x10", "bed_sheet.png", "y", "5"], // unmake
 			["entropy_stack", "4x4", "", "y", "10"], //special
 			["kitchen_sink", "4x5", "sink_sheet.png", "y", "8"], // fill with pots and pans
