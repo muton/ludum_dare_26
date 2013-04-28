@@ -183,7 +183,7 @@ class Config {
 			["basin", "3x2", "", "y", "5"],  // rearrange toiletries
 			["bed", "15x10", "bed_sheet.png", "y", "5"], // unmake
 			["entropy_stack", "4x4", "", "y", "10"], //special
-			["kitchen_sink", "4x5", "", "y", "8"], // fill with pots and pans
+			["kitchen_sink", "4x5", "sink_sheet.png", "y", "8"], // fill with pots and pans
 			["hi_fi", "3x3", "", "y", "15"], // change the music
 			["dish_washer", "1x5", "", "y", "20"], // sabotage
 			["bin", "2x2", "bin_sheet.png", "y", "5"] // tip
