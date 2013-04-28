@@ -70,6 +70,11 @@ class Enemy extends FlxSprite {
 		onSpotPlayer = null;
 		volFunction = null;
 		currentClutterTarget = null;
+		if ( dealingWithClutterTimer != null ) {
+			dealingWithClutterTimer.stop();
+			dealingWithClutterTimer.destroy();
+			dealingWithClutterTimer = null;
+		}
 	}
 	
 	public function speak( fxPath:String ) {
@@ -247,7 +252,9 @@ class Enemy extends FlxSprite {
 					}
 					currentClutterTarget = null;
 					dealingWithClutterTimer = null;
-					onNothingToDo( this );
+					if ( onNothingToDo != null ) {
+						onNothingToDo( this );
+					}
 				} );
 			}
 		} else if ( null == delay && 0 == pathSpeed ) {
