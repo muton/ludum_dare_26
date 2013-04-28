@@ -61,6 +61,8 @@ class GameState extends FlxState {
 	private var overlay:FlxTypedGroup<FlxGroup>;
 	private var statusDisplay:StatusDisplay;
 	
+	private var hiFi:Scenery;
+	
 	private var lastFloorTileX:Int;
 	private var lastFloorTileY:Int;
 	
@@ -167,6 +169,9 @@ class GameState extends FlxState {
 					collisionMap.setTile( scp.loc[0] + x, scp.loc[1] + y, 1, false );
 				}
 			}
+			if ( inf.id == "hi_fi" ) {
+				hiFi = chunk;
+			}
 		}
 		
 		//Lambda.iter( collectibles.members, iter_unexistSprite );
@@ -196,7 +201,7 @@ class GameState extends FlxState {
 			}
 			enemies.add( enemy );
 			enemy.setRouteFinderMap( collisionMap );
-			enemy.setup( conf.enemies.get( en.id ), onEnemyHasNothingToDo, onEnemySpottedPlayer );
+			enemy.setup( conf.enemies.get( en.id ), onEnemyHasNothingToDo, onEnemySpottedPlayer, getVolForDistance );
 			enemy.active = true;
 			enemy.exists = true;
 			enemy.alive = true;
@@ -240,7 +245,9 @@ class GameState extends FlxState {
 		
 		switch ( count++ % 3 ) {
 			case 0: Lambda.iter( enemies.members, iter_canSeePlayer );
-			case 1: refreshDisorderScore();
+			case 1: 
+				refreshDisorderScore();
+				FlxG.music.volume = getVolForDistance( hiFi );
 			case 2: Lambda.iter( enemies.members, iter_canSeeClutter );
 		}
 		
@@ -367,6 +374,11 @@ class GameState extends FlxState {
 			}
 		}
 		return false;
+	}
+	
+	private function getVolForDistance( noisyThing:FlxSprite ):Float {
+		var dist = FlxVelocity.distanceBetween( player, noisyThing );
+		return 0.1 + 0.9 * ( 650 - dist ) / 650; //650 is roughly max dist
 	}
 	
 	private function testRoutesToAllLocations() {

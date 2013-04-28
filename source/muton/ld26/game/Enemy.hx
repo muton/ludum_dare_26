@@ -25,6 +25,7 @@ class Enemy extends FlxSprite {
 	public var info:EnemyInfo;
 	private var onNothingToDo:Enemy->Void;
 	private var onSpotPlayer:Enemy->Void;
+	private var volFunction:FlxSprite->Float;
 	
 	private var routes:Array<Array<Array<Int>>>;
 	private var currentRoute:FlxPath;
@@ -58,6 +59,7 @@ class Enemy extends FlxSprite {
 		lastFxPath = fxPath;
 		voice.stop();
 		voice.loadEmbedded( fxPath, false, false );
+		voice.volume = volFunction( this );
 		voice.play( true );
 	}
 	
@@ -195,10 +197,11 @@ class Enemy extends FlxSprite {
 		}
 	}
 	
-	public function setup( info:EnemyInfo, onNothingToDo:Enemy->Void, onSpotPlayer:Enemy->Void ) {
+	public function setup( info:EnemyInfo, onNothingToDo:Enemy->Void, onSpotPlayer:Enemy->Void, volFunction:FlxSprite->Float ) {
 		this.info = info;
 		this.onNothingToDo = onNothingToDo;
 		this.onSpotPlayer = onSpotPlayer;
+		this.volFunction = volFunction;
 		cancelWait();
 		setupRoutes();
 		
