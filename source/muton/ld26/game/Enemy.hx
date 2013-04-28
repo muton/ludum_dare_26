@@ -240,9 +240,11 @@ class Enemy extends FlxSprite {
 				stopFollowingPath( true );
 				dealingWithClutterTimer = new FlxTimer();
 				dealingWithClutterTimer.start( currentClutterTarget.timeTakenToTidy, 1, function ( t:FlxTimer ) {
-					trace( info.id + " finished dealing with clutter on " + currentClutterTarget.info.id );
-					currentClutterTarget.setCluttered( false );
-					currentClutterTarget.setBeingTidied( false );
+					if ( currentClutterTarget != null ) {
+						trace( info.id + " finished dealing with clutter on " + currentClutterTarget.info.id );
+						currentClutterTarget.setCluttered( false );
+						currentClutterTarget.setBeingTidied( false );
+					}
 					currentClutterTarget = null;
 					dealingWithClutterTimer = null;
 					onNothingToDo( this );

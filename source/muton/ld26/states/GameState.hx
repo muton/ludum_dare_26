@@ -113,7 +113,7 @@ class GameState extends FlxState {
 #end		
 
 		//FlxG.camera.setBounds( 0, 0, map.width, map.height, true );
-		FlxG.camera.follow( player, FlxCamera.STYLE_TOPDOWN, null, 3 );
+		FlxG.camera.follow( player, FlxCamera.STYLE_TOPDOWN_TIGHT, null, 3 );
 		
 		curLevel = conf.levels[0];
 		
