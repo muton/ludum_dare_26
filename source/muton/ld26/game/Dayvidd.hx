@@ -38,6 +38,20 @@ class Dayvidd extends Enemy {
 		}
 	}
 	
+	override private function spookBehaviour( level:Int, playerX:Float, playerY:Float ) {
+		if ( spookLevel > 50 ) {
+			runTo( new FlxPoint( playerX, playerY ) );
+			speak( spotFx );
+			if ( spookLevel > spotThreshold ) {
+				onSpotPlayer( this );
+			}
+		} else if ( spookLevel > 20 ) {
+			waitHere( 3 );
+			speak( whatFx );
+		}
+	}
+	
+	
 	override public function update():Void {
 		super.update();
 	}

@@ -24,4 +24,17 @@ class Fiyonarr extends Enemy {
 		routes.push( [ Places.diningRoom, Places.kitchen, Places.diningRoom, Places.kitchen, Places.diningRoom, Places.kitchen ] );
 	}
 	
+	override private function spookBehaviour( level:Int, playerX, playerY ) {
+		if ( spookLevel > 20 ) {
+			waitHere( 2 );
+			if ( spookLevel > spotThreshold ) {
+				speak( spotFx );
+				onSpotPlayer( this );
+			} else {
+				speak( whatFx );
+			}
+		} 
+	}
+	
+	
 }

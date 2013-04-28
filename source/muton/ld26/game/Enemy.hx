@@ -74,6 +74,7 @@ class Enemy extends FlxSprite {
 		if ( inARush || null != currentRoute ) {
 			return;
 		}
+		trace( info.id + " lookBusy" );
 		cancelWait();
 		currentRoute = Config.routeToPath( routes[Std.int( FlxG.random() * routes.length )], 9 );
 		moveToNextStage();
@@ -118,6 +119,7 @@ class Enemy extends FlxSprite {
 	}
 	
 	private function stopTidying():Void {
+		trace( info.id + " stopTidying" );
 		if ( isTidying() ) {
 			currentClutterTarget.setBeingTidied( false );
 		}
@@ -138,6 +140,7 @@ class Enemy extends FlxSprite {
 			onNothingToDo( this );
 			return;
 		}
+		trace( info.id + " moveToNextStage" );
 		var pt = currentRoute.removeAt( 0 );
 		var path = findTheDamnPath( new FlxPoint( x, y ), pt );
 		if ( path == null ) { 
@@ -155,13 +158,13 @@ class Enemy extends FlxSprite {
 		var multH = height / 2;
 		
 		for ( offset in offsetsToTry ) {
-			var flxPath = routeFinderMap.findPath( new FlxPoint( start.x + offset[0] * multW, start.y + multH * offset[1] ), target );
+			var flxPath = routeFinderMap.findPath( new FlxPoint( start.x + offset[0] * multW, start.y + multH * offset[1] ), target, true, true );
 			if ( null != flxPath ) { 
 				return flxPath;
 			}
 		}
 		for ( offset in offsetsToTry ) {
-			var flxPath = routeFinderMap.findPath( start, new FlxPoint( target.x + offset[0] * multW, target.y + multH * offset[1] ) );
+			var flxPath = routeFinderMap.findPath( start, new FlxPoint( target.x + offset[0] * multW, target.y + multH * offset[1] ), true, true );
 			if ( null != flxPath ) { 
 				return flxPath;
 			}
@@ -172,17 +175,10 @@ class Enemy extends FlxSprite {
 	public function sawSomething( playerX:Float, playerY:Float ):Void {
 		spookLevel += 10;
 		trace( info.id + " saw something, spooklevel is " + spookLevel );
-		
-		if ( spookLevel > 50 ) {
-			runTo( new FlxPoint( playerX, playerY ) );
-			speak( spotFx );
-			if ( spookLevel > spotThreshold ) {
-				onSpotPlayer( this );
-			}
-		} else if ( spookLevel > 20 ) {
-			waitHere( 1 );
-			speak( whatFx );
-		}
+		spookBehaviour( spookLevel, playerX, playerY );
+	}
+	
+	private function spookBehaviour( level:Int, playerX, playerY ) {
 	}
 	
 	public function waitHere( numSecs:Float ):Void {
