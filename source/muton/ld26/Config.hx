@@ -181,7 +181,7 @@ class Config {
 			["toilet", "3x2", "", "y", "10"],	// block it
 			["shower", "13x5", "shower.png"],
 			["basin", "3x2", "", "y", "5"],  // rearrange toiletries
-			["bed", "15x10", "", "y", "5"], // unmake
+			["bed", "15x10", "bed_sheet.png", "y", "5"], // unmake
 			["entropy_stack", "4x4", "", "y", "10"], //special
 			["kitchen_sink", "4x5", "", "y", "8"], // fill with pots and pans
 			["hi_fi", "3x3", "", "y", "15"], // change the music
