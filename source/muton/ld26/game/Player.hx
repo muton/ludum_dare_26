@@ -35,9 +35,9 @@ class Player extends FlxSprite {
 		
 		loadGraphic( "assets/sprites/player_sheet.png", true, false, 27, 27 );
 		addAnimation( "left", [1], 6, true );
-		addAnimation( "right", [1], 6, true );
+		addAnimation( "right", [2], 6, true );
 		addAnimation( "up", [1], 6, true );
-		addAnimation( "down", [1], 6, true );
+		addAnimation( "down", [2], 6, true );
 		addAnimation( "idea", [0], 6, true );
 		play( "right" );
 	}
