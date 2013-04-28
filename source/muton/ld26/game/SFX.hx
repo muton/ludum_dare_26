@@ -16,4 +16,9 @@ class SFX {
 	public static inline var DA_STOP_BOTHERING_ME_WOMAN:String = "assets/sound/da_stop_bothering_me_woman.mp3";
 	public static inline var DA_CLUTTER:String = "assets/sound/da_clutter.mp3";
 	
+	public static inline var FX_CLUTTER:String = "assets/sound/fx_clutter.mp3";
+	public static inline var FX_UNCLUTTER:String = "assets/sound/fx_unclutter.mp3";
+	public static inline var FX_IDEA:String = "assets/sound/fx_idea.mp3";
+	public static inline var FX_ZAP:String = "assets/sound/fx_zap.mp3";
+	
 }

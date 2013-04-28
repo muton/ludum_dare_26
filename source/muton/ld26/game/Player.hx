@@ -3,6 +3,7 @@ import nme.utils.Timer;
 import org.flixel.FlxG;
 import org.flixel.FlxObject;
 import org.flixel.FlxPoint;
+import org.flixel.FlxSound;
 import org.flixel.FlxSprite;
 import org.flixel.FlxTimer;
 
@@ -19,6 +20,7 @@ class Player extends FlxSprite {
 	private var interactFunc:FlxPoint->Void;
 	private var checkFunc:FlxPoint->Bool;
 	private var justInteracted:Bool;
+	private var dontPlayIdeaSoundAgain:Bool;
 	
 	public function new( x:Float, y:Float, interactFunc:FlxPoint->Void, checkFunc:FlxPoint->Bool ) {
 		super( x, y );
@@ -74,6 +76,12 @@ class Player extends FlxSprite {
 			// we're stopped, we're not interacting and we want to check to see if we're in front of anything fun
 			if ( checkFunc( getInteractionPoint() ) ) {
 				play( "idea", true );
+				if ( !dontPlayIdeaSoundAgain ) {
+					FlxG.play( SFX.FX_IDEA );
+					dontPlayIdeaSoundAgain = true;
+				}
+			} else {
+				dontPlayIdeaSoundAgain = false;
 			}
 		}
 		

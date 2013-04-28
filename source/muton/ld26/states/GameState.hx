@@ -29,6 +29,7 @@ import org.flixel.FlxTilemap;
 import org.flixel.FlxTypedGroup;
 import org.flixel.FlxU;
 import org.flixel.plugin.photonstorm.FlxCollision;
+import org.flixel.plugin.photonstorm.FlxDelay;
 import org.flixel.plugin.photonstorm.FlxVelocity;
 
 class GameState extends FlxState {
@@ -347,11 +348,16 @@ class GameState extends FlxState {
 	private function playerKilled() {
 		livesLeft--;
 		trace( "player killed! " + livesLeft + " lives left" );
-		if ( livesLeft >= 0 ) {
-			resetLevel();
-		} else {
-			FlxG.music.stop();
-			FlxG.switchState( new LoseState() );
+		FlxG.timeScale = 0.05;
+		FlxG.play( SFX.FX_ZAP );
+		var delay = new FlxDelay( 2000 );
+		delay.callbackFunction = function() { 
+			if ( livesLeft >= 0 ) {
+				resetLevel();
+			} else {
+				FlxG.music.stop();
+				FlxG.switchState( new LoseState() );
+			}
 		}
 	}
 	

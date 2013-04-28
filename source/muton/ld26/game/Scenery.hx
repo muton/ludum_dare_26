@@ -59,10 +59,14 @@ class Scenery extends FlxSprite {
 			play( cluttered ? "cluttered" : "uncluttered" );
 		}
 		
-		if ( statusChanged && info.id == "hi_fi" ) {
-			FlxG.music.loadStream( cluttered ? "cacophony.mp3" : "soundtrack.mp3", true, true );
-			FlxG.music.volume = 1;
-			FlxG.music.play();
+		if ( statusChanged ) {
+			if ( info.id == "hi_fi" ) {
+				FlxG.music.loadStream( cluttered ? "cacophony.mp3" : "soundtrack.mp3", true, true );
+				FlxG.music.volume = 1;
+				FlxG.music.play();
+			} else {
+				FlxG.play( cluttered ? SFX.FX_CLUTTER : SFX.FX_UNCLUTTER );
+			}
 		}
 	}
 	
