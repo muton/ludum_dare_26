@@ -122,6 +122,38 @@ class GameState extends FlxState {
 	
 	override public function destroy():Void {
 		super.destroy();
+		
+		if ( null != FlxG.music ) {
+			FlxG.music.stop();
+			FlxG.music.kill();
+		}
+		
+		if ( null != dayvidd ) {
+			dayvidd.destroy();
+			dayvidd = null;
+		}
+		if ( null != fiyonarr ) {
+			fiyonarr.destroy();
+			fiyonarr = null;
+		}
+		if ( null != player ) {
+			player.destroy();
+			player = null;
+		}
+		hiFi = null;
+		floor = null;
+		collisionMap = null;
+		wallMap = null;
+		scenery = null;
+		collectibles = null;
+		enemies = null;
+		overlay = null;
+		captions = null;
+		if ( null != cutScenes ) {
+			cutScenes.removeEventListener( Event.COMPLETE, onCutSceneComplete );
+			cutScenes = null;
+		}
+		statusDisplay = null;
 	}
 	
 	private function resetLevel() {

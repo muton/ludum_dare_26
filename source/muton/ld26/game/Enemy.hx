@@ -52,6 +52,26 @@ class Enemy extends FlxSprite {
 		voice = new FlxSound();
 	}
 	
+	override public function destroy():Void {
+		super.destroy();
+		if ( null != voice ) {
+			voice.stop();
+			voice.destroy();
+			voice = null;
+		}
+		currentRoute = null;
+		routes = null;
+		routeFinderMap = null;
+		if ( null != delay ) {
+			delay.abort();
+			delay = null;
+		}
+		onNothingToDo = null;
+		onSpotPlayer = null;
+		volFunction = null;
+		currentClutterTarget = null;
+	}
+	
 	public function speak( fxPath:String ) {
 		if ( voice.playing && lastFxPath == fxPath ) {
 			return;
