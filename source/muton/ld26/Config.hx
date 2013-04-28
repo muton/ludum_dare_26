@@ -169,7 +169,7 @@ class Config {
 		var colour = 0xFFF0F0F0;
 		scenery = new Hash<SceneryInfo>();
 		var itemList = [
-			["dustbin", "3x3", "", "y", "10"],	// knock it over
+			["dustbin", "3x3", "dustbin_sheet.png", "y", "10"],	// knock it over
 			["spaceship", "4x13", "spaceship.png"],
 			["pond", "5x45", "pond.png"],
 			["outdoor_seat", "3x3", "outdoor_seat.png"],
