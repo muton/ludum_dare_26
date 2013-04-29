@@ -34,12 +34,16 @@ class Player extends FlxSprite {
 		facingAnims.set( FlxObject.DOWN, "down" );
 		
 		loadGraphic( "assets/sprites/player_sheet.png", true, false, 27, 27 );
-		addAnimation( "left", [1], 6, true );
-		addAnimation( "right", [2], 6, true );
-		addAnimation( "up", [1], 6, true );
-		addAnimation( "down", [2], 6, true );
+		addAnimation( "left", [1,2,3], 6, true );
+		addAnimation( "right", [4,5,6], 6, true );
+		addAnimation( "up", [1,2,3], 6, true );
+		addAnimation( "down", [2,5], 6, true );
 		addAnimation( "idea", [0], 6, true );
-		play( "right" );
+		addAnimation( "leftStopped", [1], 6, true );
+		addAnimation( "rightStopped", [1], 6, true );
+		addAnimation( "upStopped", [1], 6, true );
+		addAnimation( "downStopped", [1], 6, true );
+		play( "rightStopped" );
 	}
 	
 	override public function update():Void {
@@ -58,13 +62,18 @@ class Player extends FlxSprite {
 			velocity.y *= 0.75;
 		}
 		
+		var selectedAnim:String = "";
 		if ( velocity.x != 0 ) {
 			facing = velocity.x < 0 ? FlxObject.LEFT : FlxObject.RIGHT;
-			play( facingAnims.get( facing ) );
+			selectedAnim = facingAnims.get( facing );
 		} else if ( velocity.y != 0 ) {
 			facing = velocity.y < 0 ? FlxObject.UP : FlxObject.DOWN;
-			play( facingAnims.get( facing ) );
+			selectedAnim = facingAnims.get( facing );
 		} 
+		if ( velocity.x == 0 && velocity.y == 0 ) {
+			selectedAnim += "Stopped";
+		}
+		play( selectedAnim );
 		
 		if ( ctrl.fireA && !justInteracted ) { 
 			justInteracted = true;
