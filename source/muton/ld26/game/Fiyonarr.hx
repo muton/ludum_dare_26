@@ -15,9 +15,9 @@ class Fiyonarr extends Enemy {
 		spotThreshold = 60;
 		
 		leftAnim = [0];
-		rightAnim = [1];
-		leftMoveAnim = [0];
-		rightMoveAnim = [1,2,3];
+		rightAnim = [3];
+		leftMoveAnim = [0,1,2,0];
+		rightMoveAnim = [3,4,5,3];
 	}
 	
 	override private function setupRoutes():Dynamic {
