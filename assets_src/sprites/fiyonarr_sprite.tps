@@ -63,7 +63,7 @@
             <key>width</key>
             <int>-1</int>
             <key>height</key>
-            <int>-1</int>
+            <int>36</int>
         </QSize>
         <key>reduceBorderArtifacts</key>
         <false/>
@@ -76,7 +76,7 @@
             <key>sizeConstraints</key>
             <enum type="AlgorithmSettings::SizeConstraints">AnySize</enum>
             <key>forceSquared</key>
-            <true/>
+            <false/>
             <key>forceWordAligned</key>
             <false/>
             <key>maxRects</key>

@@ -25,6 +25,10 @@ class LoseState extends FlxState {
 		var startBtn = new FlxButton( 0, FlxG.height - 80, "Try again", function() { FlxG.switchState( new GameState() ); } );
 		FlxDisplay.screenCenter( startBtn, true );
 		add( startBtn );
+		
+		var menuBtn = new FlxButton( 0, FlxG.height - 50, "Instructions", function() { FlxG.switchState( new MenuState() ); } );
+		FlxDisplay.screenCenter( menuBtn, true );
+		add( menuBtn );
 	}
 	
 	override public function destroy():Void {

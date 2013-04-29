@@ -49,13 +49,17 @@ class Enemy extends FlxSprite {
 	
 	private var leftAnim:Array<Int>;
 	private var rightAnim:Array<Int>;
+	private var leftMoveAnim:Array<Int>;
+	private var rightMoveAnim:Array<Int>;
 	
 	public function new() {
 		super( 0, 0 );
 		voice = new FlxSound();
 		
-		leftAnim = [1];
-		rightAnim = [0];
+		leftAnim = [0];
+		rightAnim = [1];
+		leftMoveAnim = [0];
+		rightMoveAnim = [1];
 	}
 	
 	override public function destroy():Void {
@@ -239,6 +243,8 @@ class Enemy extends FlxSprite {
 		loadGraphic( info.spritePath, true, false, info.spriteWidth, info.spriteHeight );
 		addAnimation( "left", leftAnim, 6, true );
 		addAnimation( "right", rightAnim, 6, true );
+		addAnimation( "leftMove", leftMoveAnim, 6, true );
+		addAnimation( "rightMove", rightMoveAnim, 6, true );
 		play( "left" );
 	}
 	
@@ -271,9 +277,11 @@ class Enemy extends FlxSprite {
 		}
 		
 		if ( velocity.x > 0 ) {
-			play( "left" );
-		} else {
-			play( "right" );
+			play( "rightMove" );
+		} else if ( velocity.x < 0 ) {
+			play( "leftMove" );
+		} else if ( velocity.x == 0 && velocity.y == 0 ) {
+			play( curAnim == "rightMove" ? "right" : "left" );
 		}
 	}
 	

@@ -13,6 +13,11 @@ class Fiyonarr extends Enemy {
 		spotFx = SFX.FY_HELP_DAYVIDD;
 		clutterFx = SFX.FY_CLUTTER;
 		spotThreshold = 60;
+		
+		leftAnim = [0];
+		rightAnim = [1];
+		leftMoveAnim = [0];
+		rightMoveAnim = [1,2,3];
 	}
 	
 	override private function setupRoutes():Dynamic {

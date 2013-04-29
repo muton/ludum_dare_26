@@ -38,7 +38,7 @@ class GameState extends FlxState {
 	private static inline var TILE_HEIGHT:Int = 9;
 	
 	public static inline var CAUGHT_RADIUS:Int = 150;
-	public static inline var EYE_ANGLE:Float = 180;
+	public static inline var EYE_ANGLE:Float = 160;
 	
 	private var count:Int;
 	private var livesLeft:Int;
