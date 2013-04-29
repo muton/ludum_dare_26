@@ -16,8 +16,8 @@ class Fiyonarr extends Enemy {
 		
 		leftAnim = [0];
 		rightAnim = [3];
-		leftMoveAnim = [0,1,2,0];
-		rightMoveAnim = [3,4,5,3];
+		leftMoveAnim = [0,1,2];
+		rightMoveAnim = [3,4,5];
 	}
 	
 	override private function setupRoutes():Dynamic {

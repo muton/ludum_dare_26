@@ -15,6 +15,11 @@ class Dayvidd extends Enemy {
 		whatFx = SFX.DA_WHATS_THAT;
 		spotFx = SFX.DA_CLUTTER;
 		clutterFx = SFX.DA_CLUTTER;
+		
+		leftAnim = [0];
+		rightAnim = [4];
+		leftMoveAnim = [0,1,2,3];
+		rightMoveAnim = [4,5,6,7];
 	}
 
 	override private function setupRoutes():Dynamic {
