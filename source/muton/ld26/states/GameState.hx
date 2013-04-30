@@ -492,6 +492,9 @@ class Util {
 	}
 	
 	public static inline function angleDifference( angleA:Float, angleB:Float ):Float {
-		return Math.abs( ( angleA + 180 -  angleB ) % 360 - 180 );
+		var difference = angleB - angleA;
+        while ( difference < -180 ) { difference += 360; }
+        while ( difference > 180 ) { difference -= 360; }
+        return Math.abs( difference );	
 	}
 }
