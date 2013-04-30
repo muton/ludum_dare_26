@@ -25,7 +25,8 @@ class Enemy extends FlxSprite {
 	public var info:EnemyInfo;
 	private var onNothingToDo:Enemy->Void;
 	private var onSpotPlayer:Enemy->Void;
-	private var volFunction:FlxSprite->Float;
+	private var volFunction:FlxSprite-> Float;
+	private var playerLocationFunc:Void->FlxPoint;
 	
 	private var routes:Array<Array<Array<Int>>>;
 	private var currentRoute:FlxPath;
@@ -77,6 +78,7 @@ class Enemy extends FlxSprite {
 			delay = null;
 		}
 		onNothingToDo = null;
+		playerLocationFunc = null;
 		onSpotPlayer = null;
 		volFunction = null;
 		currentClutterTarget = null;
@@ -118,6 +120,7 @@ class Enemy extends FlxSprite {
 	}
 	
 	public function runTo( pt:FlxPoint ):Bool {
+		if ( inARush ) { return false; }
 		var path = findTheDamnPath( new FlxPoint( x, y ), pt );
 		if ( null != path ) {
 			trace( info.id + " running to " + pt.x + "," + pt.y + ", I am at " + x + "," + y ); 
@@ -209,13 +212,11 @@ class Enemy extends FlxSprite {
 		return null;
 	}
 	
-	public function sawSomething( playerX:Float, playerY:Float ):Void {
-		spookLevel += 10;
-		trace( info.id + " saw something, spooklevel is " + spookLevel );
-		spookBehaviour( spookLevel, playerX, playerY );
+	public function sawSomething():Void {
+		spookLevel = Std.int( Math.min( 140, spookLevel + 10 ) );
 	}
 	
-	private function spookBehaviour( level:Int, playerX, playerY ) {
+	private function spookBehaviour() {
 	}
 	
 	public function waitHere( numSecs:Float ):Void {
@@ -232,11 +233,14 @@ class Enemy extends FlxSprite {
 		}
 	}
 	
-	public function setup( info:EnemyInfo, onNothingToDo:Enemy->Void, onSpotPlayer:Enemy->Void, volFunction:FlxSprite->Float ) {
+	public function setup( info:EnemyInfo, onNothingToDo:Enemy->Void, onSpotPlayer:Enemy->Void, volFunction:FlxSprite-> Float,
+		playerLocationFunc:Void->FlxPoint ) {
+
 		this.info = info;
 		this.onNothingToDo = onNothingToDo;
 		this.onSpotPlayer = onSpotPlayer;
 		this.volFunction = volFunction;
+		this.playerLocationFunc = playerLocationFunc;
 		cancelWait();
 		setupRoutes();
 		
@@ -251,6 +255,12 @@ class Enemy extends FlxSprite {
 	override public function update():Void {
 		super.update();
 		spookLevel = Std.int( Math.max( 0, spookLevel - 1 ) );
+		
+		if ( spookLevel > 0 ) {
+			spookBehaviour();
+		}
+
+		
 		if ( null != currentClutterTarget ) {
 			// we should be on route to clutter
 			if ( null == dealingWithClutterTimer && FlxVelocity.distanceToPoint( this, currentClutterTarget.tidyLoc ) < 10 ) {
@@ -284,7 +294,5 @@ class Enemy extends FlxSprite {
 			play( curAnim == "rightMove" ? "right" : "left" );
 		}
 	}
-	
-	
 	
 }

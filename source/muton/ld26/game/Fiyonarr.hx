@@ -29,7 +29,7 @@ class Fiyonarr extends Enemy {
 		routes.push( [ Places.diningRoom, Places.kitchen, Places.diningRoom, Places.kitchen, Places.diningRoom, Places.kitchen ] );
 	}
 	
-	override private function spookBehaviour( level:Int, playerX, playerY ) {
+	override private function spookBehaviour() {
 		if ( spookLevel > 20 ) {
 			waitHere( 2 );
 			if ( spookLevel > spotThreshold ) {

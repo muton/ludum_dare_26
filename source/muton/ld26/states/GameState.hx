@@ -239,7 +239,7 @@ class GameState extends FlxState {
 			}
 			enemies.add( enemy );
 			enemy.setRouteFinderMap( collisionMap );
-			enemy.setup( conf.enemies.get( en.id ), onEnemyHasNothingToDo, onEnemySpottedPlayer, getVolForDistance );
+			enemy.setup( conf.enemies.get( en.id ), onEnemyHasNothingToDo, onEnemySpottedPlayer, getVolForDistance, playerLocation );
 			enemy.active = true;
 			enemy.exists = true;
 			enemy.alive = true;
@@ -332,6 +332,10 @@ class GameState extends FlxState {
 		return false;
 	}	
 	
+	private function playerLocation():FlxPoint {
+		return new FlxPoint( player.x + player.origin.x, player.y + player.origin.y );
+	}	
+	
 	private function onEnemyHasNothingToDo( en:Enemy ) {
 		if ( FlxG.random() > 0.3 ) { 
 			en.waitHere( 2 );
@@ -401,7 +405,7 @@ class GameState extends FlxState {
 	
 	private function iter_canSeePlayer( enemy:Enemy ) {
 		if ( enemyCanSee( enemy, player ) ) {
-			enemy.sawSomething( player.x, player.y );
+			enemy.sawSomething();
 		}
 	}
 	

@@ -9,7 +9,8 @@ import org.flixel.FlxPoint;
 class Dayvidd extends Enemy {
 
 	private var justRanHere:Bool;
-	
+	private var isAttacking:Bool;
+
 	public function new() {
 		super();
 		whatFx = SFX.DA_WHATS_THAT;
@@ -37,20 +38,25 @@ class Dayvidd extends Enemy {
 	
 	override private function moveToNextStage():Void {
 		super.moveToNextStage();
-		if ( justRanHere ) {
+		if ( justRanHere && !isAttacking ) {
 			speak( SFX.DA_STOP_BOTHERING_ME_WOMAN );
+			isAttacking = false;
 			justRanHere = false;
 		}
 	}
 	
-	override private function spookBehaviour( level:Int, playerX:Float, playerY:Float ) {
+	override private function spookBehaviour() {
 		if ( spookLevel > 50 ) {
-			runTo( new FlxPoint( playerX, playerY ) );
-			speak( spotFx );
+			if ( !isAttacking ) {
+				isAttacking = true;
+				runTo( playerLocationFunc() );
+				speak( spotFx );
+			}
 			if ( spookLevel > spotThreshold ) {
 				onSpotPlayer( this );
 			}
 		} else if ( spookLevel > 20 ) {
+			isAttacking = false;
 			waitHere( 3 );
 			speak( whatFx );
 		}
@@ -59,6 +65,7 @@ class Dayvidd extends Enemy {
 	
 	override public function update():Void {
 		super.update();
+		
 	}
 	
 }
