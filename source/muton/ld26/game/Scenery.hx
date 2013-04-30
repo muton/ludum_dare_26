@@ -16,6 +16,7 @@ class Scenery extends FlxSprite {
 	
 	private var cluttered:Bool;
 	private var beingTidied:Bool;
+	private var statusChangeFunc:Scenery->Bool->Void;
 	public var tidyLoc:FlxPoint;
 	public var timeTakenToTidy:Float = 8;
 	
@@ -23,9 +24,10 @@ class Scenery extends FlxSprite {
 		super( 0, 0 );
 	}
 	
-	public function setup( info:SceneryInfo, tidyLoc:FlxPoint ) {
+	public function setup( info:SceneryInfo, tidyLoc:FlxPoint, statusChangeFunc:Scenery->Bool->Void ) {
 		this.info = info;
 		this.tidyLoc = tidyLoc;
+		this.statusChangeFunc = statusChangeFunc;
 		//loadGraphic( info.spritePath, info.anim.frameList.length > 1, false, info.spriteWidth, info.spriteHeight );
 		//addAnimation( "default", info.anim.frameList, info.anim.fps, info.anim.loop != false );
 		//play( "default" );
@@ -33,6 +35,11 @@ class Scenery extends FlxSprite {
 			loadImages();
 		}
 		setCluttered( false );
+	}
+	
+	override public function destroy():Void {
+		super.destroy();
+		statusChangeFunc = null;
 	}
 	
 	public function loadImages() {
@@ -67,6 +74,7 @@ class Scenery extends FlxSprite {
 			} else {
 				FlxG.play( cluttered ? SFX.FX_CLUTTER : SFX.FX_UNCLUTTER );
 			}
+			statusChangeFunc( this, cluttered );
 		}
 	}
 	

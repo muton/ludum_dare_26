@@ -37,8 +37,8 @@ class GameState extends FlxState {
 	private static inline var TILE_WIDTH:Int = 9;
 	private static inline var TILE_HEIGHT:Int = 9;
 	
-	public static inline var CAUGHT_RADIUS:Int = 150;
-	public static inline var EYE_ANGLE:Float = 160;
+	public static inline var CAUGHT_RADIUS:Int = 140;
+	public static inline var EYE_ANGLE:Float = 150;
 	
 	private var count:Int;
 	private var livesLeft:Int;
@@ -144,7 +144,10 @@ class GameState extends FlxState {
 			player.destroy();
 			player = null;
 		}
-		hiFi = null;
+		if ( null != hiFi ) {
+			hiFi.destroy();
+			hiFi = null;
+		}
 		floor = null;
 		collisionMap = null;
 		wallMap = null;
@@ -198,7 +201,7 @@ class GameState extends FlxState {
 		for ( scp in conf.sceneryPlaces ) { 
 			var inf = conf.scenery.get( scp.id );
 			var chunk = scenery.recycle( Scenery );
-			chunk.setup( inf, Config.tileCoordToPoint( scp.tidyLoc ) );
+			chunk.setup( inf, Config.tileCoordToPoint( scp.tidyLoc ), onSceneryStatusChange );
 			chunk.x = scp.loc[0] * TILE_WIDTH;
 			chunk.y = scp.loc[1] * TILE_HEIGHT;
 			chunk.exists = true;
@@ -335,6 +338,12 @@ class GameState extends FlxState {
 	private function playerLocation():FlxPoint {
 		return new FlxPoint( player.x + player.origin.x, player.y + player.origin.y );
 	}	
+	
+	private function onSceneryStatusChange( sc:Scenery, cluttered:Bool ) {
+		if ( sc == hiFi ) {
+			enemies.setAll( "agitated", cluttered );
+		}
+	}
 	
 	private function onEnemyHasNothingToDo( en:Enemy ) {
 		if ( FlxG.random() > 0.3 ) { 

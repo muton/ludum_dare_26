@@ -19,7 +19,10 @@ import org.flixel.plugin.photonstorm.FlxVelocity;
 class Enemy extends FlxSprite {
 
 	private var normSpeed = 40;
-	private var fastSpeed = 65;
+	private var fastSpeed = 70;
+	private var agitatedSpeed = 60;
+	private var agitated:Bool;
+	
 	private var spotThreshold = 100;
 	
 	public var info:EnemyInfo;
@@ -154,7 +157,7 @@ class Enemy extends FlxSprite {
 			stopFollowingPath( true );
 			currentRoute = null;
 			
-			followPath( path, normSpeed );
+			followPath( path, agitated ? normSpeed : agitatedSpeed );
 		}
 	}
 	
@@ -186,7 +189,7 @@ class Enemy extends FlxSprite {
 		if ( path == null ) { 
 			trace( info.id + " couldn't get route to " + pt.x + ", " + pt.y );
 		} else {
-			followPath( path, normSpeed );
+			followPath( path, agitated ? agitatedSpeed : normSpeed );
 		}
 	}
 	
@@ -241,6 +244,8 @@ class Enemy extends FlxSprite {
 		this.onSpotPlayer = onSpotPlayer;
 		this.volFunction = volFunction;
 		this.playerLocationFunc = playerLocationFunc;
+		agitated = false;
+		
 		cancelWait();
 		setupRoutes();
 		
