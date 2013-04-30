@@ -18,7 +18,7 @@ class Scenery extends FlxSprite {
 	private var beingTidied:Bool;
 	private var statusChangeFunc:Scenery->Bool->Void;
 	public var tidyLoc:FlxPoint;
-	public var timeTakenToTidy:Float = 8;
+	public var timeTakenToTidy:Float = 5;
 	
 	public function new() {
 		super( 0, 0 );

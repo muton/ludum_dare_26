@@ -165,6 +165,7 @@ class Enemy extends FlxSprite {
 		trace( info.id + " stopTidying" );
 		if ( isTidying() ) {
 			currentClutterTarget.setBeingTidied( false );
+			currentClutterTarget = null;
 		}
 		if ( null != dealingWithClutterTimer ) {
 			dealingWithClutterTimer.stop();
