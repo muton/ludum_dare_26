@@ -13,6 +13,7 @@ class Fiyonarr extends Enemy {
 		spotFx = SFX.FY_HELP_DAYVIDD;
 		clutterFx = SFX.FY_CLUTTER;
 		spotThreshold = 60;
+		normSpeed = 55;
 		
 		leftAnim = [0];
 		rightAnim = [3];

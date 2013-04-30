@@ -198,13 +198,13 @@ class Enemy extends FlxSprite {
 		var multH = height / 2;
 		
 		for ( offset in offsetsToTry ) {
-			var flxPath = routeFinderMap.findPath( new FlxPoint( start.x + offset[0] * multW, start.y + multH * offset[1] ), target, true, true );
+			var flxPath = routeFinderMap.findPath( new FlxPoint( start.x + offset[0] * multW, start.y + multH * offset[1] ), target, true, false );
 			if ( null != flxPath ) { 
 				return flxPath;
 			}
 		}
 		for ( offset in offsetsToTry ) {
-			var flxPath = routeFinderMap.findPath( start, new FlxPoint( target.x + offset[0] * multW, target.y + multH * offset[1] ), true, true );
+			var flxPath = routeFinderMap.findPath( start, new FlxPoint( target.x + offset[0] * multW, target.y + multH * offset[1] ), true, false );
 			if ( null != flxPath ) { 
 				return flxPath;
 			}
